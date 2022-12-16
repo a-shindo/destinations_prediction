@@ -25,7 +25,7 @@ else
     --rm \
     -v "/$(pwd)/global_ros_setting.sh:/ros_setting.sh" \
     -v "/$(pwd)/ros_workspace:/home/${USER}/catkin_ws/" \
-    -v "/$(pwd)/../object_detector:/home/${USER}/catkin_ws/src/object_detector" \
+    -v "/$(pwd)/../whill_path:/home/${USER}/catkin_ws/src/whill_path" \
     -v "/$(pwd)/../third_party:/home/${USER}/catkin_ws/src/third_party" \
     -v "${PWD}/config/terminator_config:/home/${USER}/.config/terminator/config" \
     -v /etc/group:/etc/group:ro \
@@ -35,6 +35,6 @@ else
     -v /dev:/dev \
     -v /mnt/ssd:/mnt/ssd \
     --net host \
-    ${USER}/object_detector
+    ${USER}/whill_path
 fi
 

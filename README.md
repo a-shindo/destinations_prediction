@@ -14,12 +14,12 @@
     ```shell
     $ cd ytlab_yolov5/docker
     $ ./run.sh
-    OBJECT_DETECTOR$ cm
-    OBJECT_DETECTOR$ exit
+    DESTINATION$ cm
+    DESTINATION$ exit
     ```
 
 ## Launch
 ```shell
-roslaunch object_detector kazu_human_detection.launch 
+roslaunch whill_path kazu_human_detection.launch 
 ```
 # ouster_yolov5

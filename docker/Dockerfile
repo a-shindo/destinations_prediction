@@ -196,7 +196,7 @@ RUN adduser ${USER} root
 
 # USER root
 USER ${USER}
-RUN echo "export PS1='\[\e[1;31;40m\]OBJECT_DETECTOR\[\e[0m\] \u:\w\$ '">> ~/.bashrc
+RUN echo "export PS1='\[\e[1;31;40m\]DESTINATION\[\e[0m\] \u:\w\$ '">> ~/.bashrc
 RUN echo "source /ros_setting.sh">> ~/.bashrc
 
 ARG workspace
