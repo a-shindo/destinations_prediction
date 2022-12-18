@@ -14,7 +14,7 @@ resolution = 0.2
 
 plt.figure(figsize=[5,9])
 
-path = Path('/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal1/')
+path = Path('/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal2/')
 for i, file in enumerate(path.glob('*.csv')):
     file_index= i
 
@@ -41,7 +41,7 @@ for i, file in enumerate(path.glob('*.csv')):
     downsampled_df["x"] = downsampled_x
     downsampled_df["y"] = downsampled_y
 
-    downsampled_df.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal1_downsampler_test/'+"downsampled_" + str(file_index)+'.csv', header=True, index=False)
+    downsampled_df.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal2_downsampler_0.2/'+"downsampled_" + str(file_index)+'.csv', header=True, index=False)
     # downsampled_df.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal1_downsampler/'+"downsampled_" + str(file_index)+'.csv', header=True, index=False)
     
     plt.scatter(downsampled_df["x"], downsampled_df["y"], s=8, c="blue")
