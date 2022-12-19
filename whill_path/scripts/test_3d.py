@@ -94,7 +94,7 @@ while True:
         plt.scatter(training_data2["x"], training_data2["y"], s=4, c="pink",zorder=1)
         plt.xlabel('x', size=20)
         plt.ylabel('y', size=20)
-    plt.scatter(x[num],y[num], s=20,color='black',zorder=5)
+    plt.scatter(x[num],y[num], s=30,color='black',zorder=5)
     z_test=[x[num],y[num]]
     pdf1_test = multivariate_normal.pdf(z_test, mean_xy_1, cov_xy_1)
     pdf2_test = multivariate_normal.pdf(z_test, mean_xy_2, cov_xy_2)
