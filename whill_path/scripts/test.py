@@ -72,49 +72,46 @@ z_2 = np.dstack((XX_2, YY_2))
 pdf2 = multivariate_normal.pdf(z_2, mean_xy_2, cov_xy_2)
 # print("pdf2", pdf2)
 
-plt.figure(figsize=[16,10])
+plt.figure(figsize=[14,14])
 
-# # plt.subplots_adjust(wspace=1,hspace=0)
-# plt.subplot(121)
-# # plt.figure(figsize=[6,10])
-# plt.xlim(1, 7)
-# plt.ylim(1, 13)
-# plt.contour(XX_1, YY_1, pdf1, cmap='Blues')
-# plt.colorbar() # カラーバー
-# plt.contour(XX_2, YY_2, pdf2, cmap='Reds')
-# plt.colorbar() # カラーバー
-# plt.scatter(training_data1["x"], training_data1["y"], s=4, c="lightblue")
-# plt.scatter(training_data2["x"], training_data2["y"], s=4, c="pink")
-# plt.xlabel('x', size=20)
-# plt.ylabel('y', size=20)
-
-
-test_data = pd.read_csv(test_csv_1[0])
+test_data = pd.read_csv(test_csv_2[0])
 
 x = test_data["x"].tolist()
 y = test_data["y"].tolist()
 num=0
-while num<len(test_data.index):
+num1=1
+num2=1
+while True:
     plt.subplot(121)
-    plt.xlim(1, 7)
-    plt.ylim(1, 13)
-    plt.contour(XX_1, YY_1, pdf1, cmap='Blues')
-    # plt.colorbar() # カラーバー
-    plt.contour(XX_2, YY_2, pdf2, cmap='Reds')
-    # plt.colorbar() # カラーバー
-    plt.scatter(training_data1["x"], training_data1["y"], s=4, c="lightblue")
-    plt.scatter(training_data2["x"], training_data2["y"], s=4, c="pink")
-    plt.xlabel('x', size=20)
-    plt.ylabel('y', size=20)
-    plt.scatter(x[num],y[num], s=4,color='black')
+    if num == 0:
+        plt.xlim(1, 7)
+        plt.ylim(1, 13)
+        plt.contour(XX_1, YY_1, pdf1, cmap='Blues',zorder=3)
+        # plt.colorbar() # カラーバー
+        plt.contour(XX_2, YY_2, pdf2, cmap='Reds',zorder=4)
+        # plt.colorbar() # カラーバー
+        plt.scatter(training_data1["x"], training_data1["y"], s=4, c="lightblue",zorder=2)
+        plt.scatter(training_data2["x"], training_data2["y"], s=4, c="pink",zorder=1)
+        plt.xlabel('x', size=20)
+        plt.ylabel('y', size=20)
+    plt.scatter(x[num],y[num], s=6,color='black',zorder=5)
     z_test=[x[num],y[num]]
     pdf1_test = multivariate_normal.pdf(z_test, mean_xy_1, cov_xy_1)
     pdf2_test = multivariate_normal.pdf(z_test, mean_xy_2, cov_xy_2)
     plt.subplot(224)
     plt.scatter(num,pdf1_test,color='blue')
     plt.scatter(num,pdf2_test,color='red')
-    print(pdf1_test,"Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    num1*= pdf1_test
+    num2*= pdf2_test
+    plt.subplot(222)
+    plt.yscale('log')
+    plt.scatter(num,num1,color='blue')
+    plt.scatter(num,num2,color='red')
     num = num + 1
+    if num>=len(test_data.index):
+        break
+    # plt.pause(0.01)
+    # plt.show()
 
 
 plt.show()
