@@ -2,8 +2,8 @@ import numpy as np
 import pylab as plt
 import pandas as pd
 import matplotlib.pyplot as plt
-# import matplotlib.colors
-# import matplotlib.cm as cm
+import matplotlib.colors
+import matplotlib.cm as cm
 from scipy.stats import multivariate_normal
 from glob import glob
 from os.path import join
