@@ -30,7 +30,7 @@ test_csv_1 = random.sample(files_1, int(num_files_1*(3/23)))
 training_csv_1 = random.sample(files_1, num_files_1 - int(num_files_1*(3/23)))
 test_csv_2 = random.sample(files_2, int(num_files_2*(3/23)))
 training_csv_2 = random.sample(files_2, num_files_2 - int(num_files_2*(3/23)))
-print("test_csv_1,type(test_csv_1)", test_csv_1,type(test_csv_1))
+# print("test_csv_1,type(test_csv_1)", test_csv_1,type(test_csv_1))
 #csvファイルの中身を追加していくリストを用意
 data_list_1 = []
 
@@ -76,7 +76,7 @@ pdf2 = multivariate_normal.pdf(z_2, mean_xy_2, cov_xy_2)
 # plt.figure(figsize=[14,14])
 
 z_test_list = pd.read_csv(test_csv_1[0]).values.tolist()
-print("z_test_list",z_test_list[0],len(pd.read_csv(test_csv_1[0]).index))
+print("z_test_list",z_test_list[0],len(pd.read_csv(test_csv_2[0]).index))
 
 num=0
 pdf1_test=[]
@@ -97,9 +97,9 @@ while num < len(pd.read_csv(test_csv_1[0]).index):
     nsa_pdf1_test.append([num, pdf1_test_data/(pdf1_test_data+pdf2_test_data)])# 正規化 
     nsa_pdf2_test.append([num, pdf2_test_data/(pdf1_test_data+pdf2_test_data)])
     num1*= pdf1_test_data
+    num2*= pdf2_test_data
     pi_pdf1_test.append([num, num1])
     nsa_pi_pdf1_test.append([num, num1/(num1+num2)])
-    num2*= pdf2_test_data
     pi_pdf2_test.append([num, num2])
     nsa_pi_pdf2_test.append([num, num2/(num1+num2)])
     # color_list.append(num/(len(pd.read_csv(test_csv_1[0]).index)+1))
@@ -153,7 +153,7 @@ def generate_cmap(colors):
         color_list.append( ( v/ vmax, c) )
     return LinearSegmentedColormap.from_list('custom_cmap', color_list)
 
-colormap = generate_cmap(['green', 'yellow']) 
+colormap = generate_cmap(['m', 'yellow']) 
 traj_z_test_list_x = [r[0] for r in z_test_list]
 traj_z_test_list_y = [r[1] for r in z_test_list]       
 t = np.linspace(0,1,len(traj_z_test_list_x))
