@@ -54,16 +54,16 @@ test_1=pd.read_csv(test_csv_1[0])
 test_2=pd.read_csv(test_csv_2[0])
 # print("test_2", test_2)
 #csvファイルの中身を追加していくリストを用意
-data_list_1 = []
+data_list_2 = []
 
 #読み込むファイルのリストを走査
-for file in training_csv_1:
-    data_list_1.append(pd.read_csv(file))
+for file in training_csv_2:
+    data_list_2.append(pd.read_csv(file))
 
 #リストを全て行方向に結合
 #axis=0:行方向に結合, sort
-df_training_1 = pd.concat(data_list_1, axis=0, sort=True)
-df_training_1.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_training_1.csv",index=False)
+df_training_2 = pd.concat(data_list_2, axis=0, sort=True)
+df_training_2.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_training_1.csv",index=False)
 
 data_list_2 = []
 for file in training_csv_2:
@@ -78,13 +78,13 @@ training_data1, training_data2 = pd.read_csv("./total_training_1.csv"), pd.read_
 
 N = 1000
 lb = 1.5
-ub = 6
+ub = 4
 sigma = 0.5
 
 # X_train = np.random.uniform(lb, ub, N)
-X_train = np.copy(training_data1["x"])
+X_train = np.copy(training_data2["x"])
 # y_train = f(X_train) + np.random.normal(scale=sigma, size=N)
-y_train = np.copy(training_data1["y"])
+y_train = np.copy(training_data2["y"])
 # plt.plot(X_train, y_train, "o")
 
 def gauss_kernel(x1, x2, theta1=1.0, theta2=1.0):
@@ -123,7 +123,7 @@ def gpr_with_noise(X_test, X_train, y_train, kernel, theta3=1.0):
         var[m] = s - k @ K_inv @ np.transpose(k)
     return mu, var
 mu, var = gpr_with_noise(X_test, X_train, y_train, gauss_kernel)
-plt.plot(X_train, y_train, ".",c="lightblue")
+plt.plot(X_train, y_train, ".",c="pink")
 plt.plot(X_test, mu)
 # plt.fill_between(X_test, mu - 2.0 * var, mu + 2.0 * var, color="navajowhite")
 plt.xlim(1, 6)
