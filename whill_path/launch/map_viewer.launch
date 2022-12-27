@@ -1,0 +1,11 @@
+<launch>
+
+  <arg name="rviz_config" default="$(find whill_path)/rviz/map_viewer.rviz"/>
+  <arg name="map_2d_path" value="$(find whill_path)/map/map2d.yaml" />
+
+  <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_2d_path)" respawn="false">
+        <param name="use_map_topic" value="true"/>
+  </node>
+  <node pkg="rviz" name="rviz" type="rviz" output="screen"  args="-d $(arg rviz_config)"/>
+
+</launch>

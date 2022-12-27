@@ -6,7 +6,7 @@ import math
 
 resolution = 0.1
 
-csvPath='/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal2/20221215_170110.csv'
+csvPath='/home/ytpc2017d/catkin_ws/src/whill_path/scripts/34_1_20221227/20221227_155605.csv'
 
 csv_name = os.path.splitext(os.path.basename(csvPath))[0]
 
@@ -32,7 +32,7 @@ for index, row in df.iterrows():
 
 downsampled_df["x"] = downsampled_x
 downsampled_df["y"] = downsampled_y
-downsampled_df.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal2/'+"downsampled_" + (csv_name)+'.csv', index=False)
+downsampled_df.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/old_csv/34_1_20221227'+"downsampled_" + (csv_name)+'.csv', index=False)
 
 plt.plot(downsampled_df["x"], downsampled_df["y"])
 plt.show()

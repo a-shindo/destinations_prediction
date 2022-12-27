@@ -23,3 +23,6 @@
 roslaunch whill_path kazu_human_detection.launch 
 ```
 # ouster_yolov5
+
+
+roslaunch whill_path map_viewer.launch 
