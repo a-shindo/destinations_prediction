@@ -6,7 +6,7 @@ import math
 
 resolution = 0.1
 
-csvPath='/home/ytpc2017d/catkin_ws/src/whill_path/scripts/34_1_20221227.28/nakamurasan/20221227_181636.csv'
+csvPath='/home/ytpc2017d/catkin_ws/src/whill_path/scripts/name_34_1_20221227.28/nakamurasan/20221227_181547.csv'
 
 csv_name = os.path.splitext(os.path.basename(csvPath))[0]
 

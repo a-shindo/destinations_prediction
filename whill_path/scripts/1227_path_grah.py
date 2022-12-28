@@ -16,8 +16,8 @@ plt.figure(figsize=[10,32])
 
 
 
-path = Path('/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28/stairs')
-# path = Path('/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28/dining_hall')
+path = Path('/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28/staff_station')
+# path = Path('/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28/dining_hall,stairs, elevator, sota')
 
 
 
@@ -49,12 +49,12 @@ for i, file in enumerate(path.glob('*.csv')):
 
 
 
-    downsampled_df.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts//goal_34_1_20221227.28_downsampler0.2/stairs/'+"downsampled_" + str(file_index)+'.csv', header=True, index=False)
-    # downsampled_df.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts//goal_34_1_20221227.28_downsampler0.2/dining_hall/'+"downsampled_" + str(file_index)+'.csv', header=True, index=False)
+    downsampled_df.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts//goal_34_1_20221227.28_downsampler0.2/staff_station/'+"downsampled_" + str(file_index)+'.csv', header=True, index=False)
+    # downsampled_df.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts//goal_34_1_20221227.28_downsampler0.2/dining_hall, stairs, elevator, sota, /'+"downsampled_" + str(file_index)+'.csv', header=True, index=False)
     
 
 
-    plt.scatter(downsampled_df["x"], downsampled_df["y"], s=8, c="violet")
+    plt.scatter(downsampled_df["x"], downsampled_df["y"], s=8, c="lightblue")
     # c= orange, violet, yellowgreen, red, light blue
     # plt.plot(downsampled_df["x"], downsampled_df["y"])
     plt.xlim(-4, 6)
