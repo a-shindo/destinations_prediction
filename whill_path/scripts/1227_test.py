@@ -220,7 +220,7 @@ ax0.scatter(training_data1["x"], training_data1["y"], s=2, c="orange")
 ax0.scatter(training_data2["x"], training_data2["y"], s=2, c="yellowgreen")
 ax0.scatter(training_data3["x"], training_data3["y"], s=2, c="red")
 ax0.scatter(training_data4["x"], training_data4["y"], s=2, c="lightblue")
-ax0.scatter(training_data5["x"], training_data5["y"], s=2, c="violet")
+ax0.scatter(training_data5["x"], training_data5["y"], s=2, c="mediumpurple")
 ax0.set_xlabel('x', size=10)
 ax0.set_ylabel('y', size=10)
 
@@ -228,17 +228,18 @@ ax0.set_ylabel('y', size=10)
 ax1=fig.add_subplot(142) #(figsize=[21,14])
 ax1.set_xlim(-4, 6)
 ax1.set_ylim(-16, 16)
-ax1.contour(XX_1, YY_1, pdf1, cmap='Blues')
+ax1.contour(XX_1, YY_1, pdf1, cmap='Oranges')
 # plt.colorbar() # カラーバー
-ax1.contour(XX_2, YY_2, pdf2, cmap='Reds')
-ax1.contour(XX_2, YY_2, pdf2, cmap='Reds')
-ax1.contour(XX_2, YY_2, pdf2, cmap='Reds')
+ax1.contour(XX_2, YY_2, pdf2, cmap='YlGn')
+ax1.contour(XX_3, YY_3, pdf2, cmap='Reds')
+ax1.contour(XX_4, YY_4, pdf2, cmap='Blues')
+ax1.contour(XX_5, YY_5, pdf2, cmap='Purples')
 
 ax1.scatter(training_data1["x"], training_data1["y"], s=2, c="orange")
 ax1.scatter(training_data2["x"], training_data2["y"], s=2, c="yellowgreen")
 ax1.scatter(training_data3["x"], training_data3["y"], s=2, c="red")
 ax1.scatter(training_data4["x"], training_data4["y"], s=2, c="lightblue")
-ax1.scatter(training_data5["x"], training_data5["y"], s=2, c="violet")
+ax1.scatter(training_data5["x"], training_data5["y"], s=2, c="mediumpurple")
 ax1.set_xlabel('x', size=10)
 ax1.set_ylabel('y', size=10)
 
@@ -257,7 +258,7 @@ def generate_cmap(colors):
         color_list.append( ( v/ vmax, c) )
     return LinearSegmentedColormap.from_list('custom_cmap', color_list)
 
-colormap = generate_cmap(['black', 'yellow']) 
+colormap = generate_cmap(['magenta', 'black']) 
 traj_z_test_list_x = [r[0] for r in z_test_list]
 traj_z_test_list_y = [r[1] for r in z_test_list]       
 t = np.linspace(0,1,len(traj_z_test_list_x))
@@ -281,16 +282,16 @@ traj_pdf4_test_y = [r[1] for r in pdf4_test]
 traj_pdf5_test_x = [r[0] for r in pdf5_test] 
 traj_pdf5_test_y = [r[1] for r in pdf5_test]
 for j in range(len(traj_pdf1_test_x)-1):
-    ax2.scatter(traj_pdf1_test_x[j:j+2], traj_pdf1_test_y[j:j+2], color = cm[j], s=10,zorder=3)
-    ax2.scatter(traj_pdf2_test_x[j:j+2], traj_pdf2_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-    ax2.scatter(traj_pdf3_test_x[j:j+2], traj_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-    ax2.scatter(traj_pdf4_test_x[j:j+2], traj_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-    ax2.scatter(traj_pdf5_test_x[j:j+2], traj_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-ax2.plot(traj_pdf1_test_x,[r[1] for r in pdf1_test],color='orange', linewidth = 1.0, zorder=1)
-ax2.plot([r[0] for r in pdf2_test],[r[1] for r in pdf2_test],color='yellowgreen',linewidth = 1.0, zorder=1)
-ax2.plot([r[0] for r in pdf3_test],[r[1] for r in pdf3_test],color='red',linewidth = 1.0, zorder=1)
-ax2.plot([r[0] for r in pdf4_test],[r[1] for r in pdf4_test],color='lightblue',linewidth = 1.0, zorder=1)
-ax2.plot([r[0] for r in pdf5_test],[r[1] for r in pdf5_test],color='violet',linewidth = 1.0, zorder=1)
+    ax2.scatter(traj_pdf1_test_x[j:j+2], traj_pdf1_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    ax2.scatter(traj_pdf2_test_x[j:j+2], traj_pdf2_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    ax2.scatter(traj_pdf3_test_x[j:j+2], traj_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    ax2.scatter(traj_pdf4_test_x[j:j+2], traj_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    ax2.scatter(traj_pdf5_test_x[j:j+2], traj_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+ax2.plot(traj_pdf1_test_x,[r[1] for r in pdf1_test],color='orange', linewidth = 4.0,zorder=1)
+ax2.plot([r[0] for r in pdf2_test],[r[1] for r in pdf2_test],color='yellowgreen',linewidth = 4.0,zorder=1)
+ax2.plot([r[0] for r in pdf3_test],[r[1] for r in pdf3_test],color='red',linewidth = 4.0,zorder=1)
+ax2.plot([r[0] for r in pdf4_test],[r[1] for r in pdf4_test],color='lightblue',linewidth = 4.0,zorder=1)
+ax2.plot([r[0] for r in pdf5_test],[r[1] for r in pdf5_test],color='mediumpurple',linewidth = 4.0,zorder=1)
 # 
 ax3=fig.add_subplot(243)
 ax3.set_yscale('log')
@@ -305,16 +306,16 @@ traj_pi_pdf4_test_y = [r[1] for r in pi_pdf4_test]
 traj_pi_pdf5_test_x = [r[0] for r in pi_pdf5_test] 
 traj_pi_pdf5_test_y = [r[1] for r in pi_pdf5_test]
 for j in range(len(traj_pdf1_test_x)-1):
-    ax3.scatter(traj_pi_pdf1_test_x[j:j+2], traj_pi_pdf1_test_y[j:j+2], color = cm[j], s=10,zorder=3)
-    ax3.scatter(traj_pi_pdf2_test_x[j:j+2], traj_pi_pdf2_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-    ax3.scatter(traj_pi_pdf3_test_x[j:j+2], traj_pi_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-    ax3.scatter(traj_pi_pdf4_test_x[j:j+2], traj_pi_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-    ax3.scatter(traj_pi_pdf5_test_x[j:j+2], traj_pi_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-ax3.plot([r[0] for r in pi_pdf1_test],[r[1] for r in pi_pdf1_test], color='orange', linewidth = 2.0, zorder=1)
-ax3.plot([r[0] for r in pi_pdf2_test],[r[1] for r in pi_pdf2_test], color='yellowgreen',linewidth = 2.0, zorder=1)
-ax3.plot([r[0] for r in pi_pdf3_test],[r[1] for r in pi_pdf3_test], color='red',linewidth = 2.0, zorder=1)
-ax3.plot([r[0] for r in pi_pdf4_test],[r[1] for r in pi_pdf4_test], color='lightblue',linewidth = 2.0, zorder=1)
-ax3.plot([r[0] for r in pi_pdf5_test],[r[1] for r in pi_pdf5_test], color='violet',linewidth = 2.0, zorder=1)
+    ax3.scatter(traj_pi_pdf1_test_x[j:j+2], traj_pi_pdf1_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    ax3.scatter(traj_pi_pdf2_test_x[j:j+2], traj_pi_pdf2_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    ax3.scatter(traj_pi_pdf3_test_x[j:j+2], traj_pi_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    ax3.scatter(traj_pi_pdf4_test_x[j:j+2], traj_pi_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    ax3.scatter(traj_pi_pdf5_test_x[j:j+2], traj_pi_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+ax3.plot([r[0] for r in pi_pdf1_test],[r[1] for r in pi_pdf1_test], color='orange', linewidth = 4.0, zorder=1)
+ax3.plot([r[0] for r in pi_pdf2_test],[r[1] for r in pi_pdf2_test], color='yellowgreen',linewidth = 4.0, zorder=1)
+ax3.plot([r[0] for r in pi_pdf3_test],[r[1] for r in pi_pdf3_test], color='red',linewidth = 4.0, zorder=1)
+ax3.plot([r[0] for r in pi_pdf4_test],[r[1] for r in pi_pdf4_test], color='lightblue',linewidth = 4.0, zorder=1)
+ax3.plot([r[0] for r in pi_pdf5_test],[r[1] for r in pi_pdf5_test], color='mediumpurple',linewidth = 4.0, zorder=1)
 
 
 ax4=fig.add_subplot(248)
@@ -334,11 +335,11 @@ for j in range(len(traj_pdf1_test_x)-1):
     ax4.scatter(traj_nsa_pdf3_test_x[j:j+2], traj_nsa_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=4)
     ax4.scatter(traj_nsa_pdf4_test_x[j:j+2], traj_nsa_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=4)
     ax4.scatter(traj_nsa_pdf5_test_x[j:j+2], traj_nsa_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-ax4.plot(traj_nsa_pdf1_test_x,traj_nsa_pdf1_test_y, color='orange', linewidth = 2.0, zorder=1)
-ax4.plot(traj_nsa_pdf2_test_x,traj_nsa_pdf2_test_y, color='yellowgreen',linewidth = 2.0, zorder=1)
-ax4.plot(traj_nsa_pdf3_test_x,traj_nsa_pdf3_test_y, color='red',linewidth = 2.0, zorder=1)
-ax4.plot(traj_nsa_pdf4_test_x,traj_nsa_pdf4_test_y, color='lightblue',linewidth = 2.0, zorder=1)
-ax4.plot(traj_nsa_pdf5_test_x,traj_nsa_pdf5_test_y, color='violet',linewidth = 2.0, zorder=1)
+ax4.plot(traj_nsa_pdf1_test_x,traj_nsa_pdf1_test_y, color='orange', linewidth = 4.0, zorder=1)
+ax4.plot(traj_nsa_pdf2_test_x,traj_nsa_pdf2_test_y, color='yellowgreen',linewidth = 4.0, zorder=1)
+ax4.plot(traj_nsa_pdf3_test_x,traj_nsa_pdf3_test_y, color='red',linewidth = 4.0, zorder=1)
+ax4.plot(traj_nsa_pdf4_test_x,traj_nsa_pdf4_test_y, color='lightblue',linewidth = 4.0, zorder=1)
+ax4.plot(traj_nsa_pdf5_test_x,traj_nsa_pdf5_test_y, color='mediumpurple',linewidth = 4.0, zorder=1)
 
 ax5=fig.add_subplot(244)
 traj_nsa_pi_pdf1_test_x = [r[0] for r in nsa_pi_pdf1_test]
@@ -357,11 +358,11 @@ for j in range(len(traj_pdf1_test_x)-1):
     ax5.scatter(traj_nsa_pi_pdf3_test_x[j:j+2], traj_nsa_pi_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=4)
     ax5.scatter(traj_nsa_pi_pdf4_test_x[j:j+2], traj_nsa_pi_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=4)
     ax5.scatter(traj_nsa_pi_pdf5_test_x[j:j+2], traj_nsa_pi_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-ax5.plot(traj_nsa_pi_pdf1_test_x,traj_nsa_pi_pdf1_test_y, color='orange', linewidth = 2.0, zorder=1)
-ax5.plot(traj_nsa_pi_pdf2_test_x,traj_nsa_pi_pdf2_test_y, color='yellowgreen',linewidth = 2.0, zorder=1)
-ax5.plot(traj_nsa_pi_pdf3_test_x,traj_nsa_pi_pdf3_test_y, color='red',linewidth = 2.0, zorder=1)
-ax5.plot(traj_nsa_pi_pdf4_test_x,traj_nsa_pi_pdf4_test_y, color='lightblue',linewidth = 2.0, zorder=1)
-ax5.plot(traj_nsa_pi_pdf5_test_x,traj_nsa_pi_pdf5_test_y, color='violet',linewidth = 2.0, zorder=1)
+ax5.plot(traj_nsa_pi_pdf1_test_x,traj_nsa_pi_pdf1_test_y, color='orange', linewidth = 4.0, zorder=1)
+ax5.plot(traj_nsa_pi_pdf2_test_x,traj_nsa_pi_pdf2_test_y, color='yellowgreen',linewidth = 4.0, zorder=1)
+ax5.plot(traj_nsa_pi_pdf3_test_x,traj_nsa_pi_pdf3_test_y, color='red',linewidth = 4.0, zorder=1)
+ax5.plot(traj_nsa_pi_pdf4_test_x,traj_nsa_pi_pdf4_test_y, color='lightblue',linewidth = 4.0, zorder=1)
+ax5.plot(traj_nsa_pi_pdf5_test_x,traj_nsa_pi_pdf5_test_y, color='mediumpurple',linewidth = 4.0, zorder=1)
 
 
 
