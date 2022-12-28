@@ -11,6 +11,8 @@ https://qiita.com/minamini1985/items/60047ea416cd49721cf3
 
 # パスで指定したファイルの一覧をリスト形式で取得. （ここでは一階層下のtestファイル以下）
 csv_files = sorted(glob.glob(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal2_downsampler_test/*.csv'))
+# csv_files = sorted(glob.glob(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal2_downsampler_test/*.csv'))
+
 
 #読み込むファイルのリストを表示
 for a in csv_files:
