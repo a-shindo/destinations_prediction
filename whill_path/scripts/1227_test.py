@@ -36,16 +36,16 @@ num_files_4 = len(files_4)
 num_files_5 = len(files_5)
 
 # ファイルのリストを3:20に分ける
-test_csv_1 = random.sample(files_1, int(num_files_1*(3/21)))
-training_csv_1 = random.sample(files_1, num_files_1 - int(num_files_1*(3/21)))
-test_csv_2 = random.sample(files_2, int(num_files_2*(3/21)))
-training_csv_2 = random.sample(files_2, num_files_2 - int(num_files_2*(3/21)))
-test_csv_3 = random.sample(files_3, int(num_files_3*(3/22)))
-training_csv_3 = random.sample(files_3, num_files_3 - int(num_files_3*(3/22)))
+test_csv_1 = random.sample(files_1, int(num_files_1*(3/19)))
+training_csv_1 = random.sample(files_1, num_files_1 - int(num_files_1*(3/19)))
+test_csv_2 = random.sample(files_2, int(num_files_2*(3/19)))
+training_csv_2 = random.sample(files_2, num_files_2 - int(num_files_2*(3/19)))
+test_csv_3 = random.sample(files_3, int(num_files_3*(3/19)))
+training_csv_3 = random.sample(files_3, num_files_3 - int(num_files_3*(3/19)))
 test_csv_4 = random.sample(files_4, int(num_files_4*(3/21)))
 training_csv_4 = random.sample(files_4, num_files_4 - int(num_files_4*(3/21)))
-test_csv_5 = random.sample(files_5, int(num_files_5*(3/20)))
-training_csv_5 = random.sample(files_5, num_files_5 - int(num_files_5*(3/20)))
+test_csv_5 = random.sample(files_5, int(num_files_5*(3/19)))
+training_csv_5 = random.sample(files_5, num_files_5 - int(num_files_5*(3/19)))
 # print("test_csv_1,type(test_csv_1)", test_csv_1,type(test_csv_1))
 #csvファイルの中身を追加していくリストを用意
 data_list_1 = []
@@ -135,8 +135,9 @@ pdf5 = multivariate_normal.pdf(z_5, mean_xy_5, cov_xy_5)
 
 # plt.figure(figsize=[14,14])
 
-z_test_list = pd.read_csv(test_csv_1[0]).values.tolist()
-print("z_test_list",z_test_list[0],len(pd.read_csv(test_csv_2[0]).index))
+z_test_list = pd.read_csv(test_csv_5[1]).values.tolist()
+print("test_csv_2", test_csv_2)
+# print("z_test_list",z_test_list[1],len(pd.read_csv(test_csv_2[0]).index))
 
 num=0
 pdf1_test=[]
@@ -164,7 +165,7 @@ nsa_pi_pdf2_test=[]
 nsa_pi_pdf3_test=[]
 nsa_pi_pdf4_test=[]
 nsa_pi_pdf5_test=[]
-while num < len(pd.read_csv(test_csv_1[0]).index):
+while num < len(pd.read_csv(test_csv_5[1]).index):
     pdf1_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_1, cov_xy_1)
     pdf2_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_2, cov_xy_2)
     pdf3_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_3, cov_xy_3)
@@ -200,11 +201,11 @@ while num < len(pd.read_csv(test_csv_1[0]).index):
     nsa_pi_pdf5_test.append([num, num5/(num1+num2+num3+num4+num5)])
     # color_list.append(num/(len(pd.read_csv(test_csv_1[0]).index)+1))
     num+=1
-print("pdf1_test",pdf1_test)
-print("pi_pdf1_test",pi_pdf1_test)
-print("nsa_pdf1_test",nsa_pdf1_test)
-print("nsa_pi_pdf1_test",nsa_pi_pdf1_test)
-print("[r[0] for r in z_test_list]", [r[0] for r in z_test_list])
+# print("pdf1_test",pdf1_test)
+# print("pi_pdf1_test",pi_pdf1_test)
+# print("nsa_pdf1_test",nsa_pdf1_test)
+# print("nsa_pi_pdf1_test",nsa_pi_pdf1_test)
+# print("[r[0] for r in z_test_list]", [r[0] for r in z_test_list])
 
 # for num in range(len(pd.read_csv(test_csv_1[0]))+1):
 #     colormap = num/len(pd.read_csv(test_csv_1[0]))
@@ -231,9 +232,9 @@ ax1.set_ylim(-16, 16)
 ax1.contour(XX_1, YY_1, pdf1, cmap='Oranges')
 # plt.colorbar() # カラーバー
 ax1.contour(XX_2, YY_2, pdf2, cmap='YlGn')
-ax1.contour(XX_3, YY_3, pdf2, cmap='Reds')
-ax1.contour(XX_4, YY_4, pdf2, cmap='Blues')
-ax1.contour(XX_5, YY_5, pdf2, cmap='Purples')
+ax1.contour(XX_3, YY_3, pdf3, cmap='Reds')
+ax1.contour(XX_4, YY_4, pdf4, cmap='Blues')
+ax1.contour(XX_5, YY_5, pdf5, cmap='Purples')
 
 ax1.scatter(training_data1["x"], training_data1["y"], s=2, c="orange")
 ax1.scatter(training_data2["x"], training_data2["y"], s=2, c="yellowgreen")
@@ -258,7 +259,7 @@ def generate_cmap(colors):
         color_list.append( ( v/ vmax, c) )
     return LinearSegmentedColormap.from_list('custom_cmap', color_list)
 
-colormap = generate_cmap(['magenta', 'black']) 
+colormap = generate_cmap(['blue', 'silver']) 
 traj_z_test_list_x = [r[0] for r in z_test_list]
 traj_z_test_list_y = [r[1] for r in z_test_list]       
 t = np.linspace(0,1,len(traj_z_test_list_x))
@@ -266,7 +267,7 @@ cm = colormap(t)
 
 for j in range(len(traj_z_test_list_x)-1):
     ax1.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='o')
-    ax0.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='o')
+    ax0.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='.')
 # ax1.plot([r[0] for r in z_test_list],[r[1] for r in z_test_list], marker='.',  zorder=5)
 
 
