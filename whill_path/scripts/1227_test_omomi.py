@@ -16,19 +16,11 @@ import pandas as pd
 
 """
 
-# csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/dining_hall/"
-# csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/elevator/"
-# csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/sota/"
-# csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/staff_station/"
-# csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/stairs/"
-csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/dining_hall/"
-csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/elevator/"
-csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/sota/"
-csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/staff_station/"
-csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/stairs/"
-
-
-
+csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/dining_hall/"
+csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/elevator/"
+csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/sota/"
+csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/staff_station/"
+csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/stairs/"
 
 # 指定パスのファイルのリストを取得
 files_1 = glob(join(csv_foldar_1, "*.csv"))
@@ -143,7 +135,7 @@ pdf5 = multivariate_normal.pdf(z_5, mean_xy_5, cov_xy_5)
 
 # plt.figure(figsize=[14,14])
 
-z_test_list = pd.read_csv(test_csv_1[0]).values.tolist()
+z_test_list = pd.read_csv(test_csv_1[1]).values.tolist()
 print("test_csv_2", test_csv_2)
 # print("z_test_list",z_test_list[1],len(pd.read_csv(test_csv_2[0]).index))
 
@@ -173,7 +165,7 @@ nsa_pi_pdf2_test=[]
 nsa_pi_pdf3_test=[]
 nsa_pi_pdf4_test=[]
 nsa_pi_pdf5_test=[]
-while num < len(pd.read_csv(test_csv_1[0]).index):
+while num < len(pd.read_csv(test_csv_1[1]).index):
     pdf1_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_1, cov_xy_1)
     pdf2_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_2, cov_xy_2)
     pdf3_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_3, cov_xy_3)
@@ -186,12 +178,16 @@ while num < len(pd.read_csv(test_csv_1[0]).index):
     pdf4_test.append([num, pdf4_test_data])
     pdf5_test.append([num, pdf5_test_data])
 
-
-    nsa_pdf1_test.append([num, pdf1_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])# 正規化 
-    nsa_pdf2_test.append([num, pdf2_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])
-    nsa_pdf3_test.append([num, pdf3_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])
-    nsa_pdf4_test.append([num, pdf4_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])
-    nsa_pdf5_test.append([num, pdf5_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])
+    nsa_pdf1_test.append([num, (pdf1_test_data*13.6)/((pdf1_test_data*13.6)+(pdf2_test_data*16.0)+(pdf3_test_data*15.1)+(pdf4_test_data*18.0)+(pdf5_test_data*27.5))])# 正規化 
+    # nsa_pdf1_test.append([num, pdf1_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])# 正規化 
+    nsa_pdf2_test.append([num, (pdf2_test_data*16.0)/((pdf1_test_data*13.6)+(pdf2_test_data*16.0)+(pdf3_test_data*15.1)+(pdf4_test_data*18.0)+(pdf5_test_data*27.5))])
+    # nsa_pdf2_test.append([num, pdf2_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])
+    nsa_pdf3_test.append([num, (pdf3_test_data*15.1)/((pdf1_test_data*13.6)+(pdf2_test_data*16.0)+(pdf3_test_data*15.1)+(pdf4_test_data*18.0)+(pdf5_test_data*27.5))])
+    # nsa_pdf3_test.append([num, pdf3_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])
+    nsa_pdf4_test.append([num, (pdf4_test_data*18.0)/((pdf1_test_data*13.6)+(pdf2_test_data*16.0)+(pdf3_test_data*15.1)+(pdf4_test_data*18.0)+(pdf5_test_data*27.5))])
+    # nsa_pdf4_test.append([num, pdf4_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])
+    nsa_pdf5_test.append([num, (pdf5_test_data*27.5)/((pdf1_test_data*13.6)+(pdf2_test_data*16.0)+(pdf3_test_data*15.1)+(pdf4_test_data*18.0)+(pdf5_test_data*27.5))])
+    # nsa_pdf5_test.append([num, pdf5_test_data/(pdf1_test_data+pdf2_test_data+pdf3_test_data+pdf4_test_data+pdf5_test_data)])
 
     num1*= pdf1_test_data
     num2*= pdf2_test_data
@@ -199,15 +195,16 @@ while num < len(pd.read_csv(test_csv_1[0]).index):
     num4*= pdf4_test_data
     num5*= pdf5_test_data
     pi_pdf1_test.append([num, num1])
-    nsa_pi_pdf1_test.append([num, num1/(num1+num2+num3+num4+num5)])
+    nsa_pi_pdf1_test.append([num, (num1*13.6)/((num1*13.6)+(num2*16.0)+(num3*15.1)+(num4*18.0)+(num5*27.5))])
+    # nsa_pi_pdf1_test.append([num, num1/(num1+num2+num3+num4+num5)])
     pi_pdf2_test.append([num, num2])
-    nsa_pi_pdf2_test.append([num, num2/(num1+num2+num3+num4+num5)])
+    nsa_pi_pdf2_test.append([num, (num2*16.0)/((num1*13.6)+(num2*16.0)+(num3*15.1)+(num4*18.0)+(num5*27.5))])
     pi_pdf3_test.append([num, num3])
-    nsa_pi_pdf3_test.append([num, num3/(num1+num2+num3+num4+num5)])
+    nsa_pi_pdf3_test.append([num, (num3*15.1)/((num1*13.6)+(num2*16.0)+(num3*15.1)+(num4*18.0)+(num5*27.5))])
     pi_pdf4_test.append([num, num4])
-    nsa_pi_pdf4_test.append([num, num4/(num1+num2+num3+num4+num5)])
+    nsa_pi_pdf4_test.append([num, (num4*18.0)/((num1*13.6)+(num2*16.0)+(num3*15.1)+(num4*18.0)+(num5*27.5))])
     pi_pdf5_test.append([num, num5])
-    nsa_pi_pdf5_test.append([num, num5/(num1+num2+num3+num4+num5)])
+    nsa_pi_pdf5_test.append([num, (num5*27.5)/((num1*13.6)+(num2*16.0)+(num3*15.1)+(num4*18.0)+(num5*27.5))])
     # color_list.append(num/(len(pd.read_csv(test_csv_1[0]).index)+1))
     num+=1
 # print("pdf1_test",pdf1_test)
