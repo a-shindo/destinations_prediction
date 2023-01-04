@@ -10,7 +10,7 @@ https://qiita.com/minamini1985/items/60047ea416cd49721cf3
 """
 
 # パスで指定したファイルの一覧をリスト形式で取得. （ここでは一階層下のtestファイル以下）
-csv_files = sorted(glob.glob(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal2_downsampler_test/*.csv'))
+csv_files = sorted(glob.glob(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/sota/df_3/*.csv'))
 # csv_files = sorted(glob.glob(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal2_downsampler_test/*.csv'))
 
 
@@ -29,5 +29,5 @@ for file in csv_files:
 #axis=0:行方向に結合, sort
 df = pd.concat(data_list, axis=0, sort=True)
 
-df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total2.csv",index=False)
+df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_sota/total_sota_df_3.csv",index=False)
 
