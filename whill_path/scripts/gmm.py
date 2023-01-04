@@ -49,7 +49,7 @@ sigma2_truth_kdd = np.array(
 )
 
 # 真の混合係数を指定
-pi_truth_k = np.array([0.5, 0.5])
+pi_truth_k = np.array([0.4, 0.6])
 
 # 確認
 print("mu_truth_kd",mu_truth_kd)
@@ -57,15 +57,15 @@ print("sigma2_truth_kdd", sigma2_truth_kdd)
 
 # 作図用のx軸のxの値を作成
 x_1_line = np.linspace(
-    np.min(mu_truth_kd[:, 0] - 2 * np.sqrt(sigma2_truth_kdd[:, 0])), 
-    np.max(mu_truth_kd[:, 0] + 2 * np.sqrt(sigma2_truth_kdd[:, 0])), 
+    np.min(mu_truth_kd[:, 0] - 2 * np.sqrt(sigma2_truth_kdd[:,0, 0])), 
+    np.max(mu_truth_kd[:, 0] + 2 * np.sqrt(sigma2_truth_kdd[:, 0, 0])), 
     num=300
 )
 
 # 作図用のy軸のxの値を作成
 x_2_line = np.linspace(
-    np.min(mu_truth_kd[:, 1] - 3 * np.sqrt(sigma2_truth_kdd[:, 1])), 
-    np.max(mu_truth_kd[:, 1] + 3 * np.sqrt(sigma2_truth_kdd[:, 1])), 
+    np.min(mu_truth_kd[:, 1] - 2 * np.sqrt(sigma2_truth_kdd[:, 1, 1])), 
+    np.max(mu_truth_kd[:, 1] + 2 * np.sqrt(sigma2_truth_kdd[:, 1, 1])), 
     num=300
 )
 
@@ -90,7 +90,7 @@ for k in range(K):
     # K個の分布を線形結合
     model_dens += pi_truth_k[k] * tmp_dens
 
-
+print("(model_dens[:5]",model_dens[:5])
 
 
 plt.figure(figsize=[6,10])
