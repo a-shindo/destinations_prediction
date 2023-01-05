@@ -10,9 +10,9 @@ from scipy.stats import multivariate_normal
 https://www.anarchive-beta.com/entry/2021/05/25/075812
 """
 
-data1 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/total_elevator/total_elevator_df_1.csv")
-data2 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/total_elevator/total_elevator_df_2.csv")
-data3 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/total_elevator/total_elevator_df_3.csv")
+data1 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/total_stairs/total_stairs_df_1.csv")
+data2 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/total_stairs/total_stairs_df_2.csv")
+data3 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/total_stairs/total_stairs_df_3.csv")
 
 
 mean_xy_1, mean_xy_2, mean_xy_3 = np.mean(data1, 0),np.mean(data2, 0),np.mean(data3, 0)
@@ -62,8 +62,13 @@ sigma2_truth_kdd = np.array(
 )
 
 # 真の混合係数を指定
-pi_truth_k = np.array([0.65, 0.05, 0.3])
+pi_truth_k = np.array([0.185, 0.015, 0.8])
+# dining_hall : [0.3, 0.2, 0.5]
 # elevator : [0.65, 0.05, 0.3]
+# sota : [0.89, 0.01, 0.1]
+# staff_station : [0.3, 0.05, 0.65]
+# stairs : [0.185, 0.015, 0.8]
+
 
 
 # 確認
