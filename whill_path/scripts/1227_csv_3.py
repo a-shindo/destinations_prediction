@@ -15,7 +15,7 @@ https://coffee-blue-mountain.com/python-for-csv-modi1/
 
 plt.figure(figsize=[10,32])
 
-path = Path('/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/sota')
+path = Path('/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/stairs')
 
 
 for i, file in enumerate(path.glob('*.csv')):
@@ -67,11 +67,11 @@ for i, file in enumerate(path.glob('*.csv')):
     df_3["y"] = df_3_y
 
 
-    df_1.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/sota/df_1/'+"df_1_" + str(file_index)+'.csv', header=True, index=False)
-    df_2.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/sota/df_2/'+"df_2_" + str(file_index)+'.csv', header=True, index=False)
-    df_3.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/sota/df_3/'+"df_3_" + str(file_index)+'.csv', header=True, index=False)
+    df_1.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/stairs/df_1/'+"df_1_" + str(file_index)+'.csv', header=True, index=False)
+    df_2.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/stairs/df_2/'+"df_2_" + str(file_index)+'.csv', header=True, index=False)
+    df_3.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/stairs/df_3/'+"df_3_" + str(file_index)+'.csv', header=True, index=False)
 
-    # df_1.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts//goal_34_1_20221227.28_downsampler0.2/dining_hall, stairs, elevator, sota, staff_station, /'+"df_1_" + str(file_index)+'.csv', header=True, index=False)
+    # df_1.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts//goal_34_1_20221227.28_downsampler0.2/dining_hall, stairs, elevator, sota, stairs, /'+"df_1_" + str(file_index)+'.csv', header=True, index=False)
     
 
     plt.scatter(df_1["x"], df_1["y"], s=8, c="lightblue")

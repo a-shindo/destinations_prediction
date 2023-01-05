@@ -10,9 +10,9 @@ from scipy.stats import multivariate_normal
 https://www.anarchive-beta.com/entry/2021/05/25/075812
 """
 
-data1 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_sota/total_sota_df_1.csv")
-data2 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_sota/total_sota_df_2.csv")
-data3 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_sota/total_sota_df_3.csv")
+data1 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/total_elevator/total_elevator_df_1.csv")
+data2 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/total_elevator/total_elevator_df_2.csv")
+data3 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/csv_3/total_elevator/total_elevator_df_3.csv")
 
 
 mean_xy_1, mean_xy_2, mean_xy_3 = np.mean(data1, 0),np.mean(data2, 0),np.mean(data3, 0)
@@ -62,7 +62,9 @@ sigma2_truth_kdd = np.array(
 )
 
 # 真の混合係数を指定
-pi_truth_k = np.array([0.9, 0.01, 0.09])
+pi_truth_k = np.array([0.65, 0.05, 0.3])
+# elevator : [0.65, 0.05, 0.3]
+
 
 # 確認
 print("mu_truth_kd",mu_truth_kd)
