@@ -9,22 +9,24 @@ from scipy.stats import multivariate_normal
 from glob import glob
 from os.path import join
 import random
+from sklearn import mixture
+from matplotlib.colors import LogNorm
 
+"""
+pip install scikit-learn
 
 """
 
-"""
-
-# csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/dining_hall/"
-# csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/elevator/"
+csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/dining_hall/"
+csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/elevator/"
 # csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/sota/"
-# csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/staff_station/"
-# csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/stairs/"
-csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/dining_hall/"
-csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/elevator/"
-csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/sota/"
-csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/staff_station/"
-csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/stairs/"
+csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/staff_station/"
+csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/stairs/"
+# csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/dining_hall/"
+# csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/elevator/"
+# # csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/sota/"
+# csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/staff_station/"
+# csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/stairs/"
 
 
 
@@ -72,11 +74,11 @@ for file in training_csv_2:
 df_training_2 = pd.concat(data_list_2, axis=0, sort=True)
 df_training_2.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_training_elevator.csv",index=False)
 
-data_list_3 = []
-for file in training_csv_3:
-    data_list_3.append(pd.read_csv(file))
-df_training_3 = pd.concat(data_list_3, axis=0, sort=True)
-df_training_3.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_training_sota.csv",index=False)
+# data_list_3 = []
+# for file in training_csv_3:
+#     data_list_3.append(pd.read_csv(file))
+# df_training_3 = pd.concat(data_list_3, axis=0, sort=True)
+# df_training_3.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_training_sota.csv",index=False)
 
 data_list_4 = []
 for file in training_csv_4:
@@ -91,16 +93,48 @@ df_training_5 = pd.concat(data_list_5, axis=0, sort=True)
 df_training_5.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/total_training_stairs.csv",index=False)
 
 
-# トレーニング用データからガウス分布作成
-training_data1, training_data2, training_data3, training_data4, training_data5 = \
-    pd.read_csv("./total_training_dining_hall.csv"), pd.read_csv("./total_training_elevator.csv"), pd.read_csv("./total_training_sota.csv"), pd.read_csv("./total_training_staff_station.csv"), pd.read_csv("./total_training_stairs.csv")
-# 
+# トレーニング用データから混合ガウス分布作成
+training_data1, training_data2, training_data4, training_data5 = \
+    pd.read_csv("./total_training_dining_hall.csv"), pd.read_csv("./total_training_elevator.csv"), pd.read_csv("./total_training_staff_station.csv"), pd.read_csv("./total_training_stairs.csv")
+# training_data3, pd.read_csv("./total_training_sota.csv"),
 
-mean_xy_1, mean_xy_2, mean_xy_3, mean_xy_4, mean_xy_5 \
-    = np.mean(training_data1, 0),np.mean(training_data2, 0), np.mean(training_data3, 0), np.mean(training_data4, 0),np.mean(training_data5, 0)
+def gmm(X_train):
+    # 2つのコンポーネントを持つガウス混合モデルに適合
+    clf = mixture.GaussianMixture(n_components=2, covariance_type='full')
+    clf.fit(X_train)
+
+    # モデルによる予測スコアを等高線図として表示
+    x = np.linspace(np.min(X_train["x"])-1,np.max(X_train["x"])+1)
+    y = np.linspace(np.min(X_train["y"])-1,np.max(X_train["y"])+1)
+    X, Y = np.meshgrid(x, y)
+    XX = np.array([X.ravel(), Y.ravel()]).T
+    Z = -clf.score_samples(XX)
+    Z = Z.reshape(X.shape)
+    plt.figure(figsize=[10,32])
+    CS = plt.contour(X, Y, Z, norm=LogNorm(vmin=1.0, vmax=1000.0),
+                    levels=np.logspace(0, 3, 10))# norm=LogNorm(vmin=1.0, vmax=1000.0),
+    CB = plt.colorbar(CS, shrink=0.8, extend='both')
+    plt.scatter(X_train.iloc[:, 0], X_train.iloc[:, 1], .8, c="orange")
+
+    # plt.title('Negative log-likelihood predicted by a GMM')
+    plt.axis('tight')
+    plt.show()
+    return X_train
+
+
+
+
+X_train = gmm(training_data1)
+
+
+
+
+mean_xy_1, mean_xy_2, mean_xy_4, mean_xy_5 \
+    = np.mean(training_data1, 0),np.mean(training_data2, 0), np.mean(training_data4, 0),np.mean(training_data5, 0)
+# mean_xy_3, np.mean(training_data3, 0),
 cov_xy_1 = np.cov(training_data1, rowvar=False)
 cov_xy_2 = np.cov(training_data2, rowvar=False)
-cov_xy_3 = np.cov(training_data3, rowvar=False)
+# cov_xy_3 = np.cov(training_data3, rowvar=False)
 cov_xy_4 = np.cov(training_data4, rowvar=False)
 cov_xy_5 = np.cov(training_data5, rowvar=False)
 
@@ -122,11 +156,11 @@ XX_2, YY_2 = np.meshgrid(X_2,Y_2)
 z_2 = np.dstack((XX_2, YY_2))
 pdf2 = multivariate_normal.pdf(z_2, mean_xy_2, cov_xy_2)
 
-X_3 = np.linspace(np.min(training_data3["x"])-1,np.max(training_data3["x"])+1)
-Y_3 = np.linspace(np.min(training_data3["y"])-1,np.max(training_data3["y"])+1)
-XX_3, YY_3 = np.meshgrid(X_3,Y_3)
-z_3 = np.dstack((XX_3, YY_3))
-pdf3 = multivariate_normal.pdf(z_3, mean_xy_3, cov_xy_3)
+# X_3 = np.linspace(np.min(training_data3["x"])-1,np.max(training_data3["x"])+1)
+# Y_3 = np.linspace(np.min(training_data3["y"])-1,np.max(training_data3["y"])+1)
+# XX_3, YY_3 = np.meshgrid(X_3,Y_3)
+# z_3 = np.dstack((XX_3, YY_3))
+# pdf3 = multivariate_normal.pdf(z_3, mean_xy_3, cov_xy_3)
 
 X_4 = np.linspace(np.min(training_data4["x"])-1,np.max(training_data4["x"])+1)
 Y_4 = np.linspace(np.min(training_data4["y"])-1,np.max(training_data4["y"])+1)
@@ -150,39 +184,39 @@ print("test_csv_2", test_csv_2)
 num=0
 pdf1_test=[]
 pdf2_test=[]
-pdf3_test=[]
+# pdf3_test=[]
 pdf4_test=[]
 pdf5_test=[]
 nsa_pdf1_test=[]
 nsa_pdf2_test=[]
-nsa_pdf3_test=[]
+# nsa_pdf3_test=[]
 nsa_pdf4_test=[]
 nsa_pdf5_test=[]
 num1=1
 num2=1
-num3=1
+# num3=1
 num4=1
 num5=1
 pi_pdf1_test=[]
 pi_pdf2_test=[]
-pi_pdf3_test=[]
+# pi_pdf3_test=[]
 pi_pdf4_test=[]
 pi_pdf5_test=[]
 nsa_pi_pdf1_test=[]
 nsa_pi_pdf2_test=[]
-nsa_pi_pdf3_test=[]
+# nsa_pi_pdf3_test=[]
 nsa_pi_pdf4_test=[]
 nsa_pi_pdf5_test=[]
 while num < len(pd.read_csv(test_csv_1[0]).index):
     pdf1_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_1, cov_xy_1)
     pdf2_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_2, cov_xy_2)
-    pdf3_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_3, cov_xy_3)
+    # pdf3_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_3, cov_xy_3)
     pdf4_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_4, cov_xy_4)
     pdf5_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_5, cov_xy_5)
 
     pdf1_test.append([num, pdf1_test_data])
     pdf2_test.append([num, pdf2_test_data])
-    pdf3_test.append([num, pdf3_test_data])
+    # pdf3_test.append([num, pdf3_test_data])
     pdf4_test.append([num, pdf4_test_data])
     pdf5_test.append([num, pdf5_test_data])
 
@@ -239,15 +273,15 @@ ax1=fig.add_subplot(142) #(figsize=[21,14])
 ax1.set_xlim(-4, 6)
 ax1.set_ylim(-16, 16)
 ax1.contour(XX_1, YY_1, pdf1, cmap='Oranges')
-plt.colorbar() # カラーバー
+# plt.colorbar() # カラーバー
 ax1.contour(XX_2, YY_2, pdf2, cmap='YlGn')
-ax1.contour(XX_3, YY_3, pdf3, cmap='Reds')
+# ax1.contour(XX_3, YY_3, pdf3, cmap='Reds')
 ax1.contour(XX_4, YY_4, pdf4, cmap='Blues')
 ax1.contour(XX_5, YY_5, pdf5, cmap='Purples')
 
 ax1.scatter(training_data1["x"], training_data1["y"], s=2, c="orange")
 ax1.scatter(training_data2["x"], training_data2["y"], s=2, c="yellowgreen")
-ax1.scatter(training_data3["x"], training_data3["y"], s=2, c="red")
+# ax1.scatter(training_data3["x"], training_data3["y"], s=2, c="red")
 ax1.scatter(training_data4["x"], training_data4["y"], s=2, c="lightblue")
 ax1.scatter(training_data5["x"], training_data5["y"], s=2, c="mediumpurple")
 ax1.set_xlabel('x', size=10)
@@ -268,7 +302,7 @@ def generate_cmap(colors):
         color_list.append( ( v/ vmax, c) )
     return LinearSegmentedColormap.from_list('custom_cmap', color_list)
 
-colormap = generate_cmap(['blue', 'silver']) 
+colormap = generate_cmap(['red', 'black']) 
 traj_z_test_list_x = [r[0] for r in z_test_list]
 traj_z_test_list_y = [r[1] for r in z_test_list]       
 t = np.linspace(0,1,len(traj_z_test_list_x))
@@ -285,8 +319,8 @@ traj_pdf1_test_x = [r[0] for r in pdf1_test]
 traj_pdf1_test_y = [r[1] for r in pdf1_test] 
 traj_pdf2_test_x = [r[0] for r in pdf2_test] 
 traj_pdf2_test_y = [r[1] for r in pdf2_test]
-traj_pdf3_test_x = [r[0] for r in pdf3_test] 
-traj_pdf3_test_y = [r[1] for r in pdf3_test]
+# traj_pdf3_test_x = [r[0] for r in pdf3_test] 
+# traj_pdf3_test_y = [r[1] for r in pdf3_test]
 traj_pdf4_test_x = [r[0] for r in pdf4_test] 
 traj_pdf4_test_y = [r[1] for r in pdf4_test]
 traj_pdf5_test_x = [r[0] for r in pdf5_test] 
@@ -294,12 +328,12 @@ traj_pdf5_test_y = [r[1] for r in pdf5_test]
 for j in range(len(traj_pdf1_test_x)-1):
     ax2.scatter(traj_pdf1_test_x[j:j+2], traj_pdf1_test_y[j:j+2], color = cm[j], s=10,zorder=6)
     ax2.scatter(traj_pdf2_test_x[j:j+2], traj_pdf2_test_y[j:j+2], color = cm[j], s=10,zorder=6)
-    ax2.scatter(traj_pdf3_test_x[j:j+2], traj_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    # ax2.scatter(traj_pdf3_test_x[j:j+2], traj_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=6)
     ax2.scatter(traj_pdf4_test_x[j:j+2], traj_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=6)
     ax2.scatter(traj_pdf5_test_x[j:j+2], traj_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=6)
 ax2.plot(traj_pdf1_test_x,[r[1] for r in pdf1_test],color='orange', linewidth = 4.0,zorder=1)
 ax2.plot([r[0] for r in pdf2_test],[r[1] for r in pdf2_test],color='yellowgreen',linewidth = 4.0,zorder=1)
-ax2.plot([r[0] for r in pdf3_test],[r[1] for r in pdf3_test],color='red',linewidth = 4.0,zorder=1)
+# ax2.plot([r[0] for r in pdf3_test],[r[1] for r in pdf3_test],color='red',linewidth = 4.0,zorder=1)
 ax2.plot([r[0] for r in pdf4_test],[r[1] for r in pdf4_test],color='lightblue',linewidth = 4.0,zorder=1)
 ax2.plot([r[0] for r in pdf5_test],[r[1] for r in pdf5_test],color='mediumpurple',linewidth = 4.0,zorder=1)
 # 
@@ -309,8 +343,8 @@ traj_pi_pdf1_test_x = [r[0] for r in pi_pdf1_test]
 traj_pi_pdf1_test_y = [r[1] for r in pi_pdf1_test]
 traj_pi_pdf2_test_x = [r[0] for r in pi_pdf2_test] 
 traj_pi_pdf2_test_y = [r[1] for r in pi_pdf2_test]
-traj_pi_pdf3_test_x = [r[0] for r in pi_pdf3_test] 
-traj_pi_pdf3_test_y = [r[1] for r in pi_pdf3_test]
+# traj_pi_pdf3_test_x = [r[0] for r in pi_pdf3_test] 
+# traj_pi_pdf3_test_y = [r[1] for r in pi_pdf3_test]
 traj_pi_pdf4_test_x = [r[0] for r in pi_pdf4_test] 
 traj_pi_pdf4_test_y = [r[1] for r in pi_pdf4_test]
 traj_pi_pdf5_test_x = [r[0] for r in pi_pdf5_test] 
@@ -318,12 +352,12 @@ traj_pi_pdf5_test_y = [r[1] for r in pi_pdf5_test]
 for j in range(len(traj_pdf1_test_x)-1):
     ax3.scatter(traj_pi_pdf1_test_x[j:j+2], traj_pi_pdf1_test_y[j:j+2], color = cm[j], s=10,zorder=6)
     ax3.scatter(traj_pi_pdf2_test_x[j:j+2], traj_pi_pdf2_test_y[j:j+2], color = cm[j], s=10,zorder=6)
-    ax3.scatter(traj_pi_pdf3_test_x[j:j+2], traj_pi_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=6)
+    # ax3.scatter(traj_pi_pdf3_test_x[j:j+2], traj_pi_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=6)
     ax3.scatter(traj_pi_pdf4_test_x[j:j+2], traj_pi_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=6)
     ax3.scatter(traj_pi_pdf5_test_x[j:j+2], traj_pi_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=6)
 ax3.plot([r[0] for r in pi_pdf1_test],[r[1] for r in pi_pdf1_test], color='orange', linewidth = 4.0, zorder=1)
 ax3.plot([r[0] for r in pi_pdf2_test],[r[1] for r in pi_pdf2_test], color='yellowgreen',linewidth = 4.0, zorder=1)
-ax3.plot([r[0] for r in pi_pdf3_test],[r[1] for r in pi_pdf3_test], color='red',linewidth = 4.0, zorder=1)
+# ax3.plot([r[0] for r in pi_pdf3_test],[r[1] for r in pi_pdf3_test], color='red',linewidth = 4.0, zorder=1)
 ax3.plot([r[0] for r in pi_pdf4_test],[r[1] for r in pi_pdf4_test], color='lightblue',linewidth = 4.0, zorder=1)
 ax3.plot([r[0] for r in pi_pdf5_test],[r[1] for r in pi_pdf5_test], color='mediumpurple',linewidth = 4.0, zorder=1)
 
@@ -333,8 +367,8 @@ traj_nsa_pdf1_test_x = [r[0] for r in nsa_pdf1_test]
 traj_nsa_pdf1_test_y = [r[1] for r in nsa_pdf1_test] 
 traj_nsa_pdf2_test_x = [r[0] for r in nsa_pdf2_test] 
 traj_nsa_pdf2_test_y = [r[1] for r in nsa_pdf2_test]
-traj_nsa_pdf3_test_x = [r[0] for r in nsa_pdf3_test] 
-traj_nsa_pdf3_test_y = [r[1] for r in nsa_pdf3_test]
+# traj_nsa_pdf3_test_x = [r[0] for r in nsa_pdf3_test] 
+# traj_nsa_pdf3_test_y = [r[1] for r in nsa_pdf3_test]
 traj_nsa_pdf4_test_x = [r[0] for r in nsa_pdf4_test] 
 traj_nsa_pdf4_test_y = [r[1] for r in nsa_pdf4_test]
 traj_nsa_pdf5_test_x = [r[0] for r in nsa_pdf5_test] 
@@ -342,12 +376,12 @@ traj_nsa_pdf5_test_y = [r[1] for r in nsa_pdf5_test]
 for j in range(len(traj_pdf1_test_x)-1):
     ax4.scatter(traj_nsa_pdf1_test_x[j:j+2], traj_nsa_pdf1_test_y[j:j+2], color = cm[j], s=10,zorder=3)
     ax4.scatter(traj_nsa_pdf2_test_x[j:j+2], traj_nsa_pdf2_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-    ax4.scatter(traj_nsa_pdf3_test_x[j:j+2], traj_nsa_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=4)
+    # ax4.scatter(traj_nsa_pdf3_test_x[j:j+2], traj_nsa_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=4)
     ax4.scatter(traj_nsa_pdf4_test_x[j:j+2], traj_nsa_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=4)
     ax4.scatter(traj_nsa_pdf5_test_x[j:j+2], traj_nsa_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=4)
 ax4.plot(traj_nsa_pdf1_test_x,traj_nsa_pdf1_test_y, color='orange', linewidth = 4.0, zorder=1)
 ax4.plot(traj_nsa_pdf2_test_x,traj_nsa_pdf2_test_y, color='yellowgreen',linewidth = 4.0, zorder=1)
-ax4.plot(traj_nsa_pdf3_test_x,traj_nsa_pdf3_test_y, color='red',linewidth = 4.0, zorder=1)
+# ax4.plot(traj_nsa_pdf3_test_x,traj_nsa_pdf3_test_y, color='red',linewidth = 4.0, zorder=1)
 ax4.plot(traj_nsa_pdf4_test_x,traj_nsa_pdf4_test_y, color='lightblue',linewidth = 4.0, zorder=1)
 ax4.plot(traj_nsa_pdf5_test_x,traj_nsa_pdf5_test_y, color='mediumpurple',linewidth = 4.0, zorder=1)
 
@@ -356,8 +390,8 @@ traj_nsa_pi_pdf1_test_x = [r[0] for r in nsa_pi_pdf1_test]
 traj_nsa_pi_pdf1_test_y = [r[1] for r in nsa_pi_pdf1_test] 
 traj_nsa_pi_pdf2_test_x = [r[0] for r in nsa_pi_pdf2_test] 
 traj_nsa_pi_pdf2_test_y = [r[1] for r in nsa_pi_pdf2_test]
-traj_nsa_pi_pdf3_test_x = [r[0] for r in nsa_pi_pdf3_test] 
-traj_nsa_pi_pdf3_test_y = [r[1] for r in nsa_pi_pdf3_test]
+# traj_nsa_pi_pdf3_test_x = [r[0] for r in nsa_pi_pdf3_test] 
+# traj_nsa_pi_pdf3_test_y = [r[1] for r in nsa_pi_pdf3_test]
 traj_nsa_pi_pdf4_test_x = [r[0] for r in nsa_pi_pdf4_test] 
 traj_nsa_pi_pdf4_test_y = [r[1] for r in nsa_pi_pdf4_test]
 traj_nsa_pi_pdf5_test_x = [r[0] for r in nsa_pi_pdf5_test] 
@@ -365,12 +399,12 @@ traj_nsa_pi_pdf5_test_y = [r[1] for r in nsa_pi_pdf5_test]
 for j in range(len(traj_pdf1_test_x)-1):
     ax5.scatter(traj_nsa_pi_pdf1_test_x[j:j+2], traj_nsa_pi_pdf1_test_y[j:j+2], color = cm[j], s=10,zorder=3)
     ax5.scatter(traj_nsa_pi_pdf2_test_x[j:j+2], traj_nsa_pi_pdf2_test_y[j:j+2], color = cm[j], s=10,zorder=4)
-    ax5.scatter(traj_nsa_pi_pdf3_test_x[j:j+2], traj_nsa_pi_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=4)
+    # ax5.scatter(traj_nsa_pi_pdf3_test_x[j:j+2], traj_nsa_pi_pdf3_test_y[j:j+2], color = cm[j], s=10,zorder=4)
     ax5.scatter(traj_nsa_pi_pdf4_test_x[j:j+2], traj_nsa_pi_pdf4_test_y[j:j+2], color = cm[j], s=10,zorder=4)
     ax5.scatter(traj_nsa_pi_pdf5_test_x[j:j+2], traj_nsa_pi_pdf5_test_y[j:j+2], color = cm[j], s=10,zorder=4)
 ax5.plot(traj_nsa_pi_pdf1_test_x,traj_nsa_pi_pdf1_test_y, color='orange', linewidth = 4.0, zorder=1)
 ax5.plot(traj_nsa_pi_pdf2_test_x,traj_nsa_pi_pdf2_test_y, color='yellowgreen',linewidth = 4.0, zorder=1)
-ax5.plot(traj_nsa_pi_pdf3_test_x,traj_nsa_pi_pdf3_test_y, color='red',linewidth = 4.0, zorder=1)
+# ax5.plot(traj_nsa_pi_pdf3_test_x,traj_nsa_pi_pdf3_test_y, color='red',linewidth = 4.0, zorder=1)
 ax5.plot(traj_nsa_pi_pdf4_test_x,traj_nsa_pi_pdf4_test_y, color='lightblue',linewidth = 4.0, zorder=1)
 ax5.plot(traj_nsa_pi_pdf5_test_x,traj_nsa_pi_pdf5_test_y, color='mediumpurple',linewidth = 4.0, zorder=1)
 

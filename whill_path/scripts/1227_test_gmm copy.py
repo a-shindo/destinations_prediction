@@ -12,20 +12,20 @@ import random
 
 csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/dining_hall/"
 csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/elevator/"
-# csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/sota/"
+csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/sota/"
 csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/staff_station/"
 csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/stairs/"
 
 # 指定パスのファイルのリストを取得
 files_1 = glob(join(csv_foldar_1, "*.csv"))
 files_2 = glob(join(csv_foldar_2, "*.csv"))
-# files_3 = glob(join(csv_foldar_3, "*.csv"))
+files_3 = glob(join(csv_foldar_3, "*.csv"))
 files_4 = glob(join(csv_foldar_4, "*.csv"))
 files_5 = glob(join(csv_foldar_5, "*.csv"))
 # ファイルの総数を取得
 num_files_1 = len(files_1)
 num_files_2 = len(files_2)
-# num_files_3 = len(files_3)
+num_files_3 = len(files_3)
 num_files_4 = len(files_4)
 num_files_5 = len(files_5)
 
@@ -34,15 +34,15 @@ test_csv_1 = random.sample(files_1, int(num_files_1*(2/19)))
 training_csv_1 = random.sample(files_1, num_files_1 - int(num_files_1*(2/19)))
 test_csv_2 = random.sample(files_2, int(num_files_2*(2/19)))
 training_csv_2 = random.sample(files_2, num_files_2 - int(num_files_2*(2/19)))
-# test_csv_3 = random.sample(files_3, int(num_files_3*(2/19)))
-# training_csv_3 = random.sample(files_3, num_files_3 - int(num_files_3*(3/19)))
+test_csv_3 = random.sample(files_3, int(num_files_3*(2/19)))
+training_csv_3 = random.sample(files_3, num_files_3 - int(num_files_3*(3/19)))
 test_csv_4 = random.sample(files_4, int(num_files_4*(2/21)))
 training_csv_4 = random.sample(files_4, num_files_4 - int(num_files_4*(2/21)))
 test_csv_5 = random.sample(files_5, int(num_files_5*(2/19)))
 training_csv_5 = random.sample(files_5, num_files_5 - int(num_files_5*(2/19)))
 print("test_csv_1",test_csv_1)
 print("test_csv_2",test_csv_2)
-# print("test_csv_3",test_csv_3)
+print("test_csv_3",test_csv_3)
 print("test_csv_4",test_csv_4)
 print("test_csv_5",test_csv_5)
 
@@ -188,68 +188,68 @@ for file in files_2_3:
 df = pd.concat(data_list_2_3, axis=0, sort=True)
 df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_elevator/elevator_3.csv",index=False)
 
-# # sota
-# for i, file in enumerate(training_csv_3):
-#     file_index= i
-#     df = pd.read_csv(file)
-#     first_x = df["x"][0]
-#     first_y = df["y"][0]
-#     c = ['x', 'y']
-#     df_1 = pd.DataFrame(columns=c)
-#     df_1_x = [first_x]
-#     df_1_y = [first_y]
-#     df_2 = df.tail(1)
-#     df_3 = pd.DataFrame(columns=c)
-#     next_x = []
-#     next_y = []
+# sota
+for i, file in enumerate(training_csv_3):
+    file_index= i
+    df = pd.read_csv(file)
+    first_x = df["x"][0]
+    first_y = df["y"][0]
+    c = ['x', 'y']
+    df_1 = pd.DataFrame(columns=c)
+    df_1_x = [first_x]
+    df_1_y = [first_y]
+    df_2 = df.tail(1)
+    df_3 = pd.DataFrame(columns=c)
+    next_x = []
+    next_y = []
 
-#     for index, row in df.iterrows():
-#         x = row["x"]
-#         y = row["y"]
+    for index, row in df.iterrows():
+        x = row["x"]
+        y = row["y"]
 
-#         if y >=3:
-#             df_1_x.append(x)
-#             df_1_y.append(y)
-#             first_x = x
-#             first_y = y
-#         elif index+1 <len(df):
-#             next_x.append(x)
-#             next_y.append(y)
+        if y >=3:
+            df_1_x.append(x)
+            df_1_y.append(y)
+            first_x = x
+            first_y = y
+        elif index+1 <len(df):
+            next_x.append(x)
+            next_y.append(y)
 
-#     df_1["x"] = df_1_x
-#     df_1["y"] = df_1_y
+    df_1["x"] = df_1_x
+    df_1["y"] = df_1_y
 
-#     df_3_x = next_x
-#     df_3_y = next_y
-#     df_3["x"] = df_3_x
-#     df_3["y"] = df_3_y
+    df_3_x = next_x
+    df_3_y = next_y
+    df_3["x"] = df_3_x
+    df_3["y"] = df_3_y
 
-#     df_1.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_1/'+"df_1_" + str(file_index)+'.csv', header=True, index=False)
-#     df_2.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_2/'+"df_2_" + str(file_index)+'.csv', header=True, index=False)
-#     df_3.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_3/'+"df_3_" + str(file_index)+'.csv', header=True, index=False)
+    df_1.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_1/'+"df_1_" + str(file_index)+'.csv', header=True, index=False)
+    df_2.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_2/'+"df_2_" + str(file_index)+'.csv', header=True, index=False)
+    df_3.to_csv(f'/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_3/'+"df_3_" + str(file_index)+'.csv', header=True, index=False)
 
-# csv_folder_3_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_1/"
-# csv_folder_3_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_2/"
-# csv_folder_3_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_3/"
-# files_3_1 = glob(join(csv_folder_3_1, "*.csv"))
-# files_3_2 = glob(join(csv_folder_3_2, "*.csv"))
-# files_3_3 = glob(join(csv_folder_3_3, "*.csv"))
+csv_folder_3_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_1/"
+csv_folder_3_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_2/"
+csv_folder_3_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/sota/df_3/"
+files_3_1 = glob(join(csv_folder_3_1, "*.csv"))
+files_3_2 = glob(join(csv_folder_3_2, "*.csv"))
+files_3_3 = glob(join(csv_folder_3_3, "*.csv"))
 
-# data_list_3_1 = []
-# data_list_3_2 = []
-# data_list_3_3 = []
-# for file in files_3_1:
-#     data_list_3_1.append(pd.read_csv(file))
-# df = pd.concat(data_list_3_1, axis=0, sort=True)
-# df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_sota/sota_1.csv",index=False)
-# for file in files_3_2:
-#     data_list_3_2.append(pd.read_csv(file))
-# df = pd.concat(data_list_3_2, axis=0, sort=True)
-# df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_sota/sota_2.csv",index=False)
-# for file in files_3_3:
-#     data_list_3_3.append(pd.read_csv(file))
-# df = pd.concat(data_list_3_3, axis=0, sort=True)
-# df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_sota/sota_3.csv",index=False)
+data_list_3_1 = []
+data_list_3_2 = []
+data_list_3_3 = []
+for file in files_3_1:
+    data_list_3_1.append(pd.read_csv(file))
+df = pd.concat(data_list_3_1, axis=0, sort=True)
+df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_sota/sota_1.csv",index=False)
+for file in files_3_2:
+    data_list_3_2.append(pd.read_csv(file))
+df = pd.concat(data_list_3_2, axis=0, sort=True)
+df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_sota/sota_2.csv",index=False)
+for file in files_3_3:
+    data_list_3_3.append(pd.read_csv(file))
+df = pd.concat(data_list_3_3, axis=0, sort=True)
+df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_sota/sota_3.csv",index=False)
 
 # staff_station
 for i, file in enumerate(training_csv_4):
@@ -272,7 +272,7 @@ for i, file in enumerate(training_csv_4):
 
         if y >=3:
             df_1_x.append(x)
-            df_1_y.append(y)
+            df_1_y.append(y)-
             first_x = x
             first_y = y
         elif index+1 <len(df):
@@ -373,190 +373,10 @@ for file in files_5_3:
 df = pd.concat(data_list_5_3, axis=0, sort=True)
 df.to_csv(f"/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_stairs/stairs_3.csv",index=False)
 
-# トレーニング用データから混合ガウス分布作成
-data1_1 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_dining_hall/dining_hall_1.csv.csv")
-data1_2 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_dining_hall/dining_hall_2.csv.csv")
-data1_3 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_dining_hall/dining_hall_3.csv.csv")
-data2_1 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_elevator/elevator_1.csv.csv")
-data2_2 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_elevator/elevator_2.csv.csv")
-data2_3 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_elevator/elevator_3.csv.csv")
-# data3_1 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_sota/sota_1.csv.csv")
-# data3_2 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_sota/sota_2.csv.csv")
-# data3_3 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_sota/sota_3.csv.csv")
-data4_1 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_staff_station/staff_station_1.csv.csv")
-data4_2 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_staff_station/staff_station_2.csv.csv")
-data4_3 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_staff_station/staff_station_3.csv.csv")
-data5_1 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_stairs/stairs_1.csv.csv")
-data5_2 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_stairs/stairs_2.csv.csv")
-data5_3 = pd.read_csv("/home/ytpc2017d/catkin_ws/src/whill_path/scripts/gmm_csv_3/total_stairs/stairs_3.csv.csv")
-
-
-# dining_hall : [0.3, 0.2, 0.5]
-mean_xy_1_1, mean_xy_1_2, mean_xy_1_3 = np.mean(data1_1, 0),np.mean(data1_2, 0),np.mean(data1_3, 0)
-cov_xy_1_1, cov_xy_1_2 , cov_xy_1_3 = np.cov(data1_1, rowvar=False), np.cov(data1_2, rowvar=False), np.cov(data1_3, rowvar=False)
-
-# Sigma11, Sigma12, Sigma21, Sigma22 = cov_xy.reshape(-1)
-X_1_1 = np.linspace(np.min(data1_1["x"])-1,np.max(data1_1["x"])+1)
-Y_1_1 = np.linspace(np.min(data1_1["y"])-1,np.max(data1_1["y"])+1)
-XX_1_1, YY_1_1 = np.meshgrid(X_1_1,Y_1_1)
-z_1_1 = np.dstack((XX_1_1, YY_1_1))
-pdf1_1 = multivariate_normal.pdf(z_1_1, mean_xy_1_1, cov_xy_1_1)
-
-X_1_2 = np.linspace(np.min(data1_2["x"])-1,np.max(data1_2["x"])+1)
-Y_1_2 = np.linspace(np.min(data1_2["y"])-1,np.max(data1_2["y"])+1)
-XX_1_2, YY_1_2 = np.meshgrid(X_1_2,Y_1_2)
-z_1_2 = np.dstack((XX_1_2, YY_1_2))
-pdf1_2 = multivariate_normal.pdf(z_2, mean_xy_1_2, cov_xy_1_2)
-
-X_1_3 = np.linspace(np.min(data1_3["x"])-1,np.max(data1_3["x"])+1)
-Y_1_3 = np.linspace(np.min(data1_3["y"])-1,np.max(data1_3["y"])+1)
-XX_1_3, YY_1_3 = np.meshgrid(X_1_3,Y_1_3)
-z_1_3 = np.dstack((XX_1_3, YY_1_3))
-pdf1_3 = multivariate_normal.pdf(z_1_3, mean_xy_1_3, cov_xy_1_3)
-
-# 次元数を設定:(固定)
-D = 2
-
-# クラスタ数を指定
-"""
-ここでは共通
-
-"""
-K = 3
-
-# K個の真の平均を指定
-mu_truth_kd_1 = np.array(
-    [mean_xy_1_1, 
-    mean_xy_1_2,
-    mean_xy_1_3]
-)
-
-# K個の真の共分散行列を指定
-sigma2_truth_kdd_1 = np.array(
-    [cov_xy_1_1, 
-    cov_xy_1_2,
-    cov_xy_1_3]
-)
-
-# 真の混合係数を指定
-pi_truth_k_1 = np.array([0.3, 0.2, 0.5])
-# sota : [0.89, 0.01, 0.1]
-# staff_station : [0.3, 0.05, 0.65]
-# stairs : [0.185, 0.015, 0.8]
-
-# # 確認
-# print("mu_truth_kd_1",mu_truth_kd_1)
-# print("sigma2_truth_kdd_1", sigma2_truth_kdd_1)
-
-# 作図用のx軸のxの値を作成
-x_1_line_1 = np.linspace(
-    np.min(mu_truth_kd_1[:, 0] - 3 * np.sqrt(sigma2_truth_kdd_1[:, 0, 0])), 
-    np.max(mu_truth_kd_1[:, 0] + 3 * np.sqrt(sigma2_truth_kdd_1[:, 0, 0])), 
-    num=300
-)
-
-# 作図用のy軸のxの値を作成
-x_2_line_1 = np.linspace(
-    np.min(mu_truth_kd_1[:, 1] - 3 * np.sqrt(sigma2_truth_kdd_1[:, 1, 1])), 
-    np.max(mu_truth_kd_1[:, 1] + 3 * np.sqrt(sigma2_truth_kdd_1[:, 1, 1])), 
-    num=300
-)
-
-# 作図用の格子状の点を作成
-x_1_grid_1, x_2_grid_1 = np.meshgrid(x_1_line_1, x_2_line_1)
-
-# 作図用のxの点を作成
-x_point_arr_1 = np.stack([x_1_grid_1.flatten(), x_2_grid_1.flatten()], axis=1)
-
-# 作図用に各次元の要素数を保存
-x_dim_1= x_1_grid_1.shape
-print("x_dim_1",x_dim_1)
-
-# 真の分布を計算
-model_dens_1 = 0
-for k in range(K):
-    # クラスタkの分布の確率密度を計算
-    tmp_dens_1 = multivariate_normal.pdf(
-        x=x_point_arr_1, mean=mu_truth_kd_1[k], cov=sigma2_truth_kdd_1[k]
-    )
-    
-    # K個の分布を線形結合
-    model_dens_1 += pi_truth_k_1[k] * tmp_dens_1
 
 
 
-# elevator : [0.65, 0.05, 0.3]
-mean_xy_2_1, mean_xy_2_2, mean_xy_2_3 = np.mean(data2_1, 0),np.mean(data2_2, 0),np.mean(data2_3, 0)
-cov_xy_2_1, cov_xy_2_2 , cov_xy_2_3 = np.cov(data2_1, rowvar=False), np.cov(data2_2, rowvar=False), np.cov(data2_3, rowvar=False)
 
-X_2_1 = np.linspace(np.min(data2_1["x"])-1,np.max(data2_1["x"])+1)
-Y_2_1 = np.linspace(np.min(data2_1["y"])-1,np.max(data2_1["y"])+1)
-XX_2_1, YY_2_1 = np.meshgrid(X_2_1,Y_2_1)
-z_2_1 = np.dstack((XX_2_1, YY_2_1))
-pdf2_1 = multivariate_normal.pdf(z_2_1, mean_xy_2_1, cov_xy_2_1)
-X_2_2 = np.linspace(np.min(data2_2["x"])-1,np.max(data2_2["x"])+1)
-Y_2_2 = np.linspace(np.min(data2_2["y"])-1,np.max(data2_2["y"])+1)
-XX_2_2, YY_2_2 = np.meshgrid(X_2_2,Y_2_2)
-z_2_2 = np.dstack((XX_2_2, YY_2_2))
-pdf2_2 = multivariate_normal.pdf(z_2_2, mean_xy_2_2, cov_xy_2_2)
-X_2_3 = np.linspace(np.min(data2_3["x"])-1,np.max(data2_3["x"])+1)
-Y_2_3 = np.linspace(np.min(data2_3["y"])-1,np.max(data2_3["y"])+1)
-XX_2_3, YY_2_3 = np.meshgrid(X_2_3,Y_2_3)
-z_2_3 = np.dstack((XX_2_3, YY_2_3))
-pdf2_3 = multivariate_normal.pdf(z_2_3, mean_xy_2_3, cov_xy_2_3)
-
-mu_truth_kd_1 = np.array(
-    [mean_xy_1_1, 
-    mean_xy_1_2,
-    mean_xy_1_3]
-)
-sigma2_truth_kdd_1 = np.array(
-    [cov_xy_1_1, 
-    cov_xy_1_2,
-    cov_xy_1_3]
-)
-
-pi_truth_k_1 = np.array([0.65, 0.05, 0.3])
-# dining_hall : [0.3, 0.2, 0.5]
-# elevator : [0.65, 0.05, 0.3]
-# sota : [0.89, 0.01, 0.1]
-# staff_station : [0.3, 0.05, 0.65]
-# stairs : [0.185, 0.015, 0.8]
-
-
-x_1_line_1 = np.linspace(
-    np.min(mu_truth_kd_1[:, 0] - 3 * np.sqrt(sigma2_truth_kdd_1[:, 0, 0])), 
-    np.max(mu_truth_kd_1[:, 0] + 3 * np.sqrt(sigma2_truth_kdd_1[:, 0, 0])), 
-    num=300
-)
-
-# 作図用のy軸のxの値を作成
-x_2_line_1 = np.linspace(
-    np.min(mu_truth_kd_1[:, 1] - 3 * np.sqrt(sigma2_truth_kdd_1[:, 1, 1])), 
-    np.max(mu_truth_kd_1[:, 1] + 3 * np.sqrt(sigma2_truth_kdd_1[:, 1, 1])), 
-    num=300
-)
-
-# 作図用の格子状の点を作成
-x_1_grid_1, x_2_grid_1 = np.meshgrid(x_1_line_1, x_2_line_1)
-
-# 作図用のxの点を作成
-x_point_arr_1 = np.stack([x_1_grid_1.flatten(), x_2_grid_1.flatten()], axis=1)
-
-# 作図用に各次元の要素数を保存
-x_dim_1= x_1_grid_1.shape
-print("x_dim_1",x_dim_1)
-
-# 真の分布を計算
-model_dens_1 = 0
-for k in range(K):
-    # クラスタkの分布の確率密度を計算
-    tmp_dens_1 = multivariate_normal.pdf(
-        x=x_point_arr_1, mean=mu_truth_kd_1[k], cov=sigma2_truth_kdd_1[k]
-    )
-    
-    # K個の分布を線形結合
-    model_dens_1 += pi_truth_k_1[k] * tmp_dens_1
 
 
 # # トレーニング用データからガウス分布作成
@@ -597,7 +417,7 @@ for k in range(K):
 
 # X_4 = np.linspace(np.min(training_data4["x"])-1,np.max(training_data4["x"])+1)
 # Y_4 = np.linspace(np.min(training_data4["y"])-1,np.max(training_data4["y"])+1)
-# XX_4, YY_4 = np.meshgrid(X_4,Y_4)K
+# XX_4, YY_4 = np.meshgrid(X_4,Y_4)
 # z_4 = np.dstack((XX_4, YY_4))
 # pdf4 = multivariate_normal.pdf(z_4, mean_xy_4, cov_xy_4)
 
