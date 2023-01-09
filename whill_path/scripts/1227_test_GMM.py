@@ -11,24 +11,19 @@ from os.path import join
 import random
 from sklearn import mixture
 from matplotlib.colors import LogNorm
+import warnings
 
 """
 pip install scikit-learn
 
 """
+warnings.simplefilter('ignore')
 
 csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/dining_hall/"
 csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/elevator/"
 # csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/sota/"
 csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/staff_station/"
 csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/stairs/"
-# csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/dining_hall/"
-# csv_foldar_2 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/elevator/"
-# # csv_foldar_3 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/sota/"
-# csv_foldar_4 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/staff_station/"
-# csv_foldar_5 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1227_downsampler0.2_y<4/stairs/"
-
-
 
 
 # 指定パスのファイルのリストを取得
@@ -98,97 +93,118 @@ training_data1, training_data2, training_data4, training_data5 = \
     pd.read_csv("./total_training_dining_hall.csv"), pd.read_csv("./total_training_elevator.csv"), pd.read_csv("./total_training_staff_station.csv"), pd.read_csv("./total_training_stairs.csv")
 # training_data3, pd.read_csv("./total_training_sota.csv"),
 
-def gmm(X_train):
-    # 2つのコンポーネントを持つガウス混合モデルに適合
-    clf = mixture.GaussianMixture(n_components=2, covariance_type='full')
-    clf.fit(X_train)
-    print("weights_", clf.weights_) # 各混合成分の重量
-    print("means_", clf.means_) # 各混合成分の平均
-    print("covariances_", clf.covariances_) # 各混合成分の共分散
-    print("precisions_", clf.precisions_) # 混合物中の各成分の精度行列(=共分散行列の逆行列)
-    print("precisions_cholesky_", clf.precisions_cholesky_) # 各混合成分の精度行列のコレスキー分解
-    print("converged_", clf.converged_) # 収束(True or False)
-    print("n_iter_", clf.n_iter_) # 収束に到達するために EM の最適適合で使用されるステップ数
-    print("lower_bound_", clf.lower_bound_) # EM の最適適合の (モデルに関するトレーニング データの) 対数尤度の下限値
-    print("n_features_in_", clf.n_features_in_) # フィット中に見られる特徴の数
-    # print("feature_names_in_", clf.feature_names_in_) # 
-    
 
-    # モデルによる予測スコアを等高線図として表示
-    x = np.linspace(np.min(X_train["x"])-1,np.max(X_train["x"])+1)
-    y = np.linspace(np.min(X_train["y"])-1,np.max(X_train["y"])+1)
-    X, Y = np.meshgrid(x, y)
-    XX = np.array([X.ravel(), Y.ravel()]).T
-    Z = -clf.score_samples(XX)
-    Z = Z.reshape(X.shape)
-    plt.figure(figsize=[10,32])
-    CS = plt.contour(X, Y, Z, norm=LogNorm(vmin=1.0, vmax=1000.0),
-                    levels=np.logspace(0, 3, 10))# norm=LogNorm(vmin=1.0, vmax=1000.0),
-    CB = plt.colorbar(CS, shrink=0.8, extend='both')
-    plt.scatter(X_train.iloc[:, 0], X_train.iloc[:, 1], .8, c="orange")
+# ガウス混合モデルに適合
+clf_1 = mixture.GaussianMixture(n_components=2, covariance_type='full')
+gmm_1 = clf_1.fit(training_data1)
+clf_2 = mixture.GaussianMixture(n_components=2, covariance_type='full')
+clf_2.fit(training_data2)
+clf_4 = mixture.GaussianMixture(n_components=2, covariance_type='full')
+clf_4.fit(training_data4)
+clf_5 = mixture.GaussianMixture(n_components=2, covariance_type='full')
+clf_5.fit(training_data5)
 
-    # plt.title('Negative log-likelihood predicted by a GMM')
-    plt.axis('tight')
-    plt.show()
-    print("weights_", clf.weights_)
-
-    return X_train
+weights_1=clf_1.weights_ # 各混合成分の重量
+means_1=clf_1.means_ # 各混合成分の平均
+covariances_1= clf_1.covariances_ # 各混合成分の共分散
+precisions_1= clf_1.precisions_ # 混合物中の各成分の精度行列(=共分散行列の逆行列)
+precisions_cholesky_1 = clf_1.precisions_cholesky_# 各混合成分の精度行列のコレスキー分解
+converged_1= clf_1.converged_ # 収束(True or False)
+n_iter_1 = clf_1.n_iter_ # 収束に到達するために EM の最適適合で使用されるステップ数
+lower_bound_1= clf_1.lower_bound_ # EM の最適適合の (モデルに関するトレーニング データの) 対数尤度の下限値
+n_features_in_1= clf_1.n_features_in_ # フィット中に見られる特徴の数
 
 
-
-X_train = gmm(training_data1)
-
-
-
-mean_xy_1, mean_xy_2, mean_xy_4, mean_xy_5 \
-    = np.mean(training_data1, 0),np.mean(training_data2, 0), np.mean(training_data4, 0),np.mean(training_data5, 0)
-# mean_xy_3, np.mean(training_data3, 0),
-cov_xy_1 = np.cov(training_data1, rowvar=False)
-cov_xy_2 = np.cov(training_data2, rowvar=False)
-# cov_xy_3 = np.cov(training_data3, rowvar=False)
-cov_xy_4 = np.cov(training_data4, rowvar=False)
-cov_xy_5 = np.cov(training_data5, rowvar=False)
+print("weights_1", clf_1.weights_) # 各混合成分の重量
+print("means_1", clf_1.means_) # 各混合成分の平均
+print("covariances_1", clf_1.covariances_) # 各混合成分の共分散
+print("precisions_1", clf_1.precisions_) # 混合物中の各成分の精度行列(=共分散行列の逆行列)
+print("precisions_cholesky_1", clf_1.precisions_cholesky_) # 各混合成分の精度行列のコレスキー分解
+print("converged_1", clf_1.converged_) # 収束(True or False)
+print("n_iter_1", clf_1.n_iter_) # 収束に到達するために EM の最適適合で使用されるステップ数
+print("lower_bound_1", clf_1.lower_bound_) # EM の最適適合の (モデルに関するトレーニング データの) 対数尤度の下限値
+print("n_features_in_1", clf_1.n_features_in_) # フィット中に見られる特徴の数
+# print("feature_names_in_", clf_1.feature_names_in_) # 
 
 
-
-X_1 = np.linspace(np.min(training_data1["x"])-1,np.max(training_data1["x"])+1)
-Y_1 = np.linspace(np.min(training_data1["y"])-1,np.max(training_data1["y"])+1)
-XX_1, YY_1 = np.meshgrid(X_1,Y_1)
-z_1 = np.dstack((XX_1, YY_1))
-pdf1 = multivariate_normal.pdf(z_1, mean_xy_1, cov_xy_1)
-# print("pdf1", pdf1, len(pdf1),len(pdf1[2]))
-# len(pdf1[1])
+# モデルによる予測スコアを等高線図として表示
+x_1 = np.linspace(np.min(training_data1["x"])-1,np.max(training_data1["x"])+1)
+y_1 = np.linspace(np.min(training_data1["y"])-1,np.max(training_data1["y"])+1)
+X_1, Y_1 = np.meshgrid(x_1, y_1)
+XX = np.array([X_1.ravel(), Y_1.ravel()]).T
+# print("XX, type(XX)", XX, type(XX))
+# print(clf_1.score_samples(XX))
+Z_1 = -clf_1.score_samples(XX)
+Z_1 = Z_1.reshape(X_1.shape)
+plt.figure(figsize=[10,32])
+CS = plt.contour(X_1, Y_1, Z_1, norm=LogNorm(vmin=1.0, vmax=1000.0),
+                levels=np.logspace(0, 3, 10))# norm=LogNorm(vmin=1.0, vmax=1000.0),
+CS = plt.contour(X_1, Y_1, Z_1, norm=LogNorm(vmin=1.0, vmax=1000.0),
+                levels=np.logspace(0, 3, 10))# norm=LogNorm(vmin=1.0, vmax=1000.0),
+CB = plt.colorbar(CS, shrink=0.8, extend='both')
+plt.scatter(training_data1.iloc[:, 0], training_data1.iloc[:, 1], .8, c="orange")
+# arr_2d = np.array([[2,2.5]])
+# print("qqqqqqqqqqqqqqqqqqqqq", -clf_1.score_samples(arr_2d))
+# plt.title('Negative log-likelihood predicted by a GMM')
+plt.axis('tight')
+# plt.show()
 
 
 
-X_2 = np.linspace(np.min(training_data2["x"])-1,np.max(training_data2["x"])+1)
-Y_2 = np.linspace(np.min(training_data2["y"])-1,np.max(training_data2["y"])+1)
-XX_2, YY_2 = np.meshgrid(X_2,Y_2)
-z_2 = np.dstack((XX_2, YY_2))
-pdf2 = multivariate_normal.pdf(z_2, mean_xy_2, cov_xy_2)
 
-# X_3 = np.linspace(np.min(training_data3["x"])-1,np.max(training_data3["x"])+1)
-# Y_3 = np.linspace(np.min(training_data3["y"])-1,np.max(training_data3["y"])+1)
-# XX_3, YY_3 = np.meshgrid(X_3,Y_3)
-# z_3 = np.dstack((XX_3, YY_3))
-# pdf3 = multivariate_normal.pdf(z_3, mean_xy_3, cov_xy_3)
 
-X_4 = np.linspace(np.min(training_data4["x"])-1,np.max(training_data4["x"])+1)
-Y_4 = np.linspace(np.min(training_data4["y"])-1,np.max(training_data4["y"])+1)
-XX_4, YY_4 = np.meshgrid(X_4,Y_4)
-z_4 = np.dstack((XX_4, YY_4))
-pdf4 = multivariate_normal.pdf(z_4, mean_xy_4, cov_xy_4)
 
-X_5 = np.linspace(np.min(training_data5["x"])-1,np.max(training_data5["x"])+1)
-Y_5 = np.linspace(np.min(training_data5["y"])-1,np.max(training_data5["y"])+1)
-XX_5, YY_5 = np.meshgrid(X_5,Y_5)
-z_5 = np.dstack((XX_5, YY_5))
-pdf5 = multivariate_normal.pdf(z_5, mean_xy_5, cov_xy_5)
-# print("pdf2", pdf2)
+
+# mean_xy_1, mean_xy_2, mean_xy_4, mean_xy_5 \
+#     = np.mean(training_data1, 0),np.mean(training_data2, 0), np.mean(training_data4, 0),np.mean(training_data5, 0)
+# # mean_xy_3, np.mean(training_data3, 0),
+# cov_xy_1 = np.cov(training_data1, rowvar=False)
+# cov_xy_2 = np.cov(training_data2, rowvar=False)
+# # cov_xy_3 = np.cov(training_data3, rowvar=False)
+# cov_xy_4 = np.cov(training_data4, rowvar=False)
+# cov_xy_5 = np.cov(training_data5, rowvar=False)
+
+
+
+# X_1 = np.linspace(np.min(training_data1["x"])-1,np.max(training_data1["x"])+1)
+# Y_1 = np.linspace(np.min(training_data1["y"])-1,np.max(training_data1["y"])+1)
+# XX_1, YY_1 = np.meshgrid(X_1,Y_1)
+# z_1 = np.dstack((XX_1, YY_1))
+# pdf1 = multivariate_normal.pdf(z_1, mean_xy_1, cov_xy_1)
+# # print("pdf1", pdf1, len(pdf1),len(pdf1[2]))
+# # len(pdf1[1])
+
+
+
+# X_2 = np.linspace(np.min(training_data2["x"])-1,np.max(training_data2["x"])+1)
+# Y_2 = np.linspace(np.min(training_data2["y"])-1,np.max(training_data2["y"])+1)
+# XX_2, YY_2 = np.meshgrid(X_2,Y_2)
+# z_2 = np.dstack((XX_2, YY_2))
+# pdf2 = multivariate_normal.pdf(z_2, mean_xy_2, cov_xy_2)
+
+# # X_3 = np.linspace(np.min(training_data3["x"])-1,np.max(training_data3["x"])+1)
+# # Y_3 = np.linspace(np.min(training_data3["y"])-1,np.max(training_data3["y"])+1)
+# # XX_3, YY_3 = np.meshgrid(X_3,Y_3)
+# # z_3 = np.dstack((XX_3, YY_3))
+# # pdf3 = multivariate_normal.pdf(z_3, mean_xy_3, cov_xy_3)
+
+# X_4 = np.linspace(np.min(training_data4["x"])-1,np.max(training_data4["x"])+1)
+# Y_4 = np.linspace(np.min(training_data4["y"])-1,np.max(training_data4["y"])+1)
+# XX_4, YY_4 = np.meshgrid(X_4,Y_4)
+# z_4 = np.dstack((XX_4, YY_4))
+# pdf4 = multivariate_normal.pdf(z_4, mean_xy_4, cov_xy_4)
+
+# X_5 = np.linspace(np.min(training_data5["x"])-1,np.max(training_data5["x"])+1)
+# Y_5 = np.linspace(np.min(training_data5["y"])-1,np.max(training_data5["y"])+1)
+# XX_5, YY_5 = np.meshgrid(X_5,Y_5)
+# z_5 = np.dstack((XX_5, YY_5))
+# pdf5 = multivariate_normal.pdf(z_5, mean_xy_5, cov_xy_5)
+# # print("pdf2", pdf2)
 
 # plt.figure(figsize=[14,14])
 
-z_test_list = pd.read_csv(test_csv_1[0]).values.tolist()
+z_test_list_0 = pd.read_csv(test_csv_1[0]).values.tolist()
+z_test_list = np.array(z_test_list_0)
 print("test_csv_2", test_csv_2)
 # print("z_test_list",z_test_list[1],len(pd.read_csv(test_csv_2[0]).index))
 
@@ -205,7 +221,7 @@ nsa_pdf4_test=[]
 nsa_pdf5_test=[]
 num1=1
 num2=1
-# num3=1
+# # num3=1
 num4=1
 num5=1
 pi_pdf1_test=[]
@@ -219,11 +235,10 @@ nsa_pi_pdf2_test=[]
 nsa_pi_pdf4_test=[]
 nsa_pi_pdf5_test=[]
 while num < len(pd.read_csv(test_csv_1[0]).index):
-    pdf1_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_1, cov_xy_1)
-    pdf2_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_2, cov_xy_2)
-    # pdf3_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_3, cov_xy_3)
-    pdf4_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_4, cov_xy_4)
-    pdf5_test_data = multivariate_normal.pdf(z_test_list[num], mean_xy_5, cov_xy_5)
+    pdf1_test_data = -clf_1.score_samples([z_test_list[num]])
+    pdf2_test_data = -clf_2.score_samples([z_test_list[num]])
+    pdf4_test_data = -clf_4.score_samples([z_test_list[num]])
+    pdf5_test_data = -clf_5.score_samples([z_test_list[num]])
 
     pdf1_test.append([num, pdf1_test_data])
     pdf2_test.append([num, pdf2_test_data])
@@ -264,39 +279,39 @@ while num < len(pd.read_csv(test_csv_1[0]).index):
 # for num in range(len(pd.read_csv(test_csv_1[0]))+1):
 #     colormap = num/len(pd.read_csv(test_csv_1[0]))
 fig = plt.figure(figsize=[28,14])
-ax0=fig.add_subplot(141) #(figsize=[21,14])
-ax0.set_xlim(-4, 6)
-ax0.set_ylim(-16, 16)
-# ax1.contour(XX_1, YY_1, pdf1, cmap='Blues',zorder=3)
+# ax0=fig.add_subplot(141) #(figsize=[21,14])
+# ax0.set_xlim(-4, 6)
+# ax0.set_ylim(-16, 16)
+# # ax1.contour(XX_1, YY_1, pdf1, cmap='Blues',zorder=3)
+# # # plt.colorbar() # カラーバー
+# # ax1.contour(XX_2, YY_2, pdf2, cmap='Reds',zorder=4)
+# # plt.colorbar() 
+# ax0.scatter(training_data1["x"], training_data1["y"], s=2, c="orange")
+# ax0.scatter(training_data2["x"], training_data2["y"], s=2, c="yellowgreen")
+# # ax0.scatter(training_data3["x"], training_data3["y"], s=2, c="red")
+# ax0.scatter(training_data4["x"], training_data4["y"], s=2, c="lightblue")
+# ax0.scatter(training_data5["x"], training_data5["y"], s=2, c="mediumpurple")
+# ax0.set_xlabel('x', size=10)
+# ax0.set_ylabel('y', size=10)
+
+
+# ax1=fig.add_subplot(142) #(figsize=[21,14])
+# ax1.set_xlim(-4, 6)
+# ax1.set_ylim(-16, 16)
+# ax1.contour(XX_1, YY_1, pdf1, cmap='Oranges')
 # # plt.colorbar() # カラーバー
-# ax1.contour(XX_2, YY_2, pdf2, cmap='Reds',zorder=4)
-# plt.colorbar() 
-ax0.scatter(training_data1["x"], training_data1["y"], s=2, c="orange")
-ax0.scatter(training_data2["x"], training_data2["y"], s=2, c="yellowgreen")
-# ax0.scatter(training_data3["x"], training_data3["y"], s=2, c="red")
-ax0.scatter(training_data4["x"], training_data4["y"], s=2, c="lightblue")
-ax0.scatter(training_data5["x"], training_data5["y"], s=2, c="mediumpurple")
-ax0.set_xlabel('x', size=10)
-ax0.set_ylabel('y', size=10)
+# ax1.contour(XX_2, YY_2, pdf2, cmap='YlGn')
+# # ax1.contour(XX_3, YY_3, pdf3, cmap='Reds')
+# ax1.contour(XX_4, YY_4, pdf4, cmap='Blues')
+# ax1.contour(XX_5, YY_5, pdf5, cmap='Purples')
 
-
-ax1=fig.add_subplot(142) #(figsize=[21,14])
-ax1.set_xlim(-4, 6)
-ax1.set_ylim(-16, 16)
-ax1.contour(XX_1, YY_1, pdf1, cmap='Oranges')
-# plt.colorbar() # カラーバー
-ax1.contour(XX_2, YY_2, pdf2, cmap='YlGn')
-# ax1.contour(XX_3, YY_3, pdf3, cmap='Reds')
-ax1.contour(XX_4, YY_4, pdf4, cmap='Blues')
-ax1.contour(XX_5, YY_5, pdf5, cmap='Purples')
-
-ax1.scatter(training_data1["x"], training_data1["y"], s=2, c="orange")
-ax1.scatter(training_data2["x"], training_data2["y"], s=2, c="yellowgreen")
-# ax1.scatter(training_data3["x"], training_data3["y"], s=2, c="red")
-ax1.scatter(training_data4["x"], training_data4["y"], s=2, c="lightblue")
-ax1.scatter(training_data5["x"], training_data5["y"], s=2, c="mediumpurple")
-ax1.set_xlabel('x', size=10)
-ax1.set_ylabel('y', size=10)
+# ax1.scatter(training_data1["x"], training_data1["y"], s=2, c="orange")
+# ax1.scatter(training_data2["x"], training_data2["y"], s=2, c="yellowgreen")
+# # ax1.scatter(training_data3["x"], training_data3["y"], s=2, c="red")
+# ax1.scatter(training_data4["x"], training_data4["y"], s=2, c="lightblue")
+# ax1.scatter(training_data5["x"], training_data5["y"], s=2, c="mediumpurple")
+# ax1.set_xlabel('x', size=10)
+# ax1.set_ylabel('y', size=10)
 
 # cm=plt.get_cmap('Blues') 
 # cm_interval=[ i / (len(pd.read_csv(test_csv_1[0]).index)) for i in range(0, len(pd.read_csv(test_csv_1[0]).index)) ] 
@@ -319,9 +334,9 @@ traj_z_test_list_y = [r[1] for r in z_test_list]
 t = np.linspace(0,1,len(traj_z_test_list_x))
 cm = colormap(t)
 
-for j in range(len(traj_z_test_list_x)-1):
-    ax1.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='o')
-    ax0.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='.')
+# for j in range(len(traj_z_test_list_x)-1):
+    # ax1.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='o')
+    # ax0.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='.')
 # ax1.plot([r[0] for r in z_test_list],[r[1] for r in z_test_list], marker='.',  zorder=5)
 
 
@@ -347,7 +362,7 @@ ax2.plot([r[0] for r in pdf2_test],[r[1] for r in pdf2_test],color='yellowgreen'
 # ax2.plot([r[0] for r in pdf3_test],[r[1] for r in pdf3_test],color='red',linewidth = 4.0,zorder=1)
 ax2.plot([r[0] for r in pdf4_test],[r[1] for r in pdf4_test],color='lightblue',linewidth = 4.0,zorder=1)
 ax2.plot([r[0] for r in pdf5_test],[r[1] for r in pdf5_test],color='mediumpurple',linewidth = 4.0,zorder=1)
-# 
+
 ax3=fig.add_subplot(243)
 ax3.set_yscale('log')
 traj_pi_pdf1_test_x = [r[0] for r in pi_pdf1_test]
