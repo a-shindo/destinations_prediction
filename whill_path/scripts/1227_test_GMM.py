@@ -117,7 +117,7 @@ print("n_features_in_1", clf_1.n_features_in_) # フィット中に見られる�
 # print("feature_names_in_", clf_1.feature_names_in_) # 
 
 
-# モデルによる予測スコアを等高線図として表示
+# 等高線図 表示
 x_1 = np.linspace(np.min(training_data1["x"])-10,np.max(training_data1["x"])+10)
 y_1 = np.linspace(np.min(training_data1["y"])-10,np.max(training_data1["y"])+10)
 X_1, Y_1 = np.meshgrid(x_1, y_1)
@@ -149,7 +149,6 @@ Z_5 = -clf_5.score_samples(XX)
 Z_5 = Z_5.reshape(X_5.shape)
 
 # テストデータ
-
 z_test_list_0 = pd.read_csv(test_csv_1[0]).values.tolist()
 z_test_list = np.array(z_test_list_0)
 print("test_csv_2", test_csv_2)

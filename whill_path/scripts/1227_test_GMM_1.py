@@ -15,6 +15,9 @@ from matplotlib.colors import LogNorm
 """
 pip install scikit-learn
 
+https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html#sklearn.mixture.GaussianMixture
+https://scikit-learn.org/stable/auto_examples/mixture/plot_gmm_pdf.html#sphx-glr-auto-examples-mixture-plot-gmm-pdf-py
+
 """
 
 csv_foldar_1 = "/home/ytpc2017d/catkin_ws/src/whill_path/scripts/goal_34_1_20221227.28_downsampler0.2/dining_hall/"
@@ -37,6 +40,7 @@ files_2 = glob(join(csv_foldar_2, "*.csv"))
 # files_3 = glob(join(csv_foldar_3, "*.csv"))
 files_4 = glob(join(csv_foldar_4, "*.csv"))
 files_5 = glob(join(csv_foldar_5, "*.csv"))
+
 # ファイルの総数を取得
 num_files_1 = len(files_1)
 num_files_2 = len(files_2)
@@ -56,6 +60,7 @@ training_csv_4 = random.sample(files_4, num_files_4 - int(num_files_4*(2/21)))
 test_csv_5 = random.sample(files_5, int(num_files_5*(2/19)))
 training_csv_5 = random.sample(files_5, num_files_5 - int(num_files_5*(2/19)))
 # print("test_csv_1,type(test_csv_1)", test_csv_1,type(test_csv_1))
+
 #csvファイルの中身を追加していくリストを用意
 data_list_1 = []
 
