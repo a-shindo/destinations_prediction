@@ -45,16 +45,16 @@ num_files_4 = len(files_4)
 num_files_5 = len(files_5)
 
 # ファイルのリストを3:20に分ける
-test_csv_1 = random.sample(files_1, int(num_files_1*(3/19)))
-training_csv_1 = random.sample(files_1, num_files_1 - int(num_files_1*(3/19)))
-test_csv_2 = random.sample(files_2, int(num_files_2*(3/19)))
-training_csv_2 = random.sample(files_2, num_files_2 - int(num_files_2*(3/19)))
+test_csv_1 = random.sample(files_1, int(num_files_1*(2/19)))
+training_csv_1 = random.sample(files_1, num_files_1 - int(num_files_1*(2/19)))
+test_csv_2 = random.sample(files_2, int(num_files_2*(2/19)))
+training_csv_2 = random.sample(files_2, num_files_2 - int(num_files_2*(2/19)))
 # test_csv_3 = random.sample(files_3, int(num_files_3*(3/19)))
 # training_csv_3 = random.sample(files_3, num_files_3 - int(num_files_3*(3/19)))
-test_csv_4 = random.sample(files_4, int(num_files_4*(3/21)))
-training_csv_4 = random.sample(files_4, num_files_4 - int(num_files_4*(3/21)))
-test_csv_5 = random.sample(files_5, int(num_files_5*(3/19)))
-training_csv_5 = random.sample(files_5, num_files_5 - int(num_files_5*(3/19)))
+test_csv_4 = random.sample(files_4, int(num_files_4*(2/21)))
+training_csv_4 = random.sample(files_4, num_files_4 - int(num_files_4*(2/21)))
+test_csv_5 = random.sample(files_5, int(num_files_5*(2/19)))
+training_csv_5 = random.sample(files_5, num_files_5 - int(num_files_5*(2/19)))
 # print("test_csv_1,type(test_csv_1)", test_csv_1,type(test_csv_1))
 #csvファイルの中身を追加していくリストを用意
 data_list_1 = []
@@ -313,14 +313,14 @@ def generate_cmap(colors):
         color_list.append( ( v/ vmax, c) )
     return LinearSegmentedColormap.from_list('custom_cmap', color_list)
 
-colormap = generate_cmap(['red', 'black']) 
+colormap = generate_cmap(['red', 'blue']) 
 traj_z_test_list_x = [r[0] for r in z_test_list]
 traj_z_test_list_y = [r[1] for r in z_test_list]       
 t = np.linspace(0,1,len(traj_z_test_list_x))
 cm = colormap(t)
 
 for j in range(len(traj_z_test_list_x)-1):
-    ax1.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='o')
+    ax1.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='.')
     ax0.plot(traj_z_test_list_x[j:j+2], traj_z_test_list_y[j:j+2], color = cm[j], marker='.')
 # ax1.plot([r[0] for r in z_test_list],[r[1] for r in z_test_list], marker='.',  zorder=5)
 
